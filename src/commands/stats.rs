@@ -7,7 +7,50 @@ use serenity::{
     prelude::*,
 };
 use std::collections::HashMap;
+use plotters::prelude::*;
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
 
+// Define a synchronous function to create and save the graph
+fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let mut best_users: Vec<_> = message_counts.iter().collect();
+    best_users.sort_by(|a, b| b.1.cmp(&a.1));
+
+    let max_count = *best_users.iter().map(|(_, count)| *count).max().unwrap_or(&0);
+    let count_length = best_users.len();
+
+    let root = BitMapBackend::new(filename, (1024, 768)).into_drawing_area();
+    root.fill(&WHITE)?;
+
+    let mut chart = ChartBuilder::on(&root)
+        .caption("User Message Count", ("sans-serif", 50))
+        .x_label_area_size(50)
+        .y_label_area_size(50)
+        .build_cartesian_2d(0..count_length, 0..max_count)?;
+
+    chart.configure_mesh()
+        .x_labels(count_length)
+        .x_label_formatter(&|x| {
+            if *x < best_users.len() {
+                best_users[*x as usize].0.clone()
+            } else {
+                String::new() // Return an empty string if out of bounds
+            }
+        })
+        .x_desc("Username")
+        .y_desc("Message Count")
+        .draw()?;
+
+    chart.draw_series(
+        Histogram::vertical(&chart)
+            .style(BLUE.filled())
+            .data(best_users.iter().enumerate().map(|(idx, (_, count))| (idx, **count))),
+    )?;
+
+    root.present()?;
+    Ok(())
+}
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     let channel_id = msg.channel_id;
@@ -51,14 +94,18 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         *message_counts.entry(message.author.name).or_insert(0) += 1;
     }
 
-    message_counts.sort_by(|a, b| b.1.cmp(&a.1));
-    let mut output = String::new();
-    for (name, count) in message_counts {
-        output.push_str(&format!("{}: {}\n", name, count));
-    }
+    // Create the graph synchronously
+    create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
 
-    msg.reply(ctx, output).await?;
+    // Send the image to the Discord channel
+    let path = Path::new("output.png");
+    let mut file = File::open(&path).expect("Unable to open the file");
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer).expect("Unable to read the file");
+
+    channel_id.send_files(&ctx.http, vec![(&buffer as &[u8], "output.png")], |m| {
+        m.content("Here is the statistics graph:")
+    }).await.expect("Unable to send message");
 
     Ok(())
 }
-
