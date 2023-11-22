@@ -223,6 +223,6 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
 }
 #[command]
 async fn test(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, &msg.id);
+    msg.reply(ctx, &msg.id).await?;
     Ok(())
 }
