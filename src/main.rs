@@ -160,6 +160,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         if citter <= current_run{
             break;
         }
+        current_run+=1;
     }
     let mut i = 0;
     // create vector of users and count messages like this {user, count}
