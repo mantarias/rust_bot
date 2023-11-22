@@ -51,13 +51,11 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         *message_counts.entry(message.author.name).or_insert(0) += 1;
     }
 
-    let mut best_users: Vec<_> = message_counts.into_iter().collect();
-    best_users.sort_by(|a, b| b.1.cmp(&a.1));
-
-    let output = best_users.into_iter()
-        .take(10)
-        .map(|(author, count)| format!("{}: {}\n", author, count))
-        .collect::<String>();
+    message_counts.sort_by(|a, b| b.1.cmp(&a.1));
+    let mut output = String::new();
+    for (name, count) in message_counts {
+        output.push_str(&format!("{}: {}\n", name, count));
+    }
 
     msg.reply(ctx, output).await?;
 
