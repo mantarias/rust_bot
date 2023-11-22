@@ -7,8 +7,6 @@ use serenity::{
     prelude::*,
 };
 use std::collections::HashMap;
-use plotters::prelude::*;
-use std::path::PathBuf;
 
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
