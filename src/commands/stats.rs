@@ -51,6 +51,7 @@ fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) 
     root.present()?;
     Ok(())
 }
+
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     let channel_id = msg.channel_id;
