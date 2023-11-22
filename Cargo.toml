@@ -23,5 +23,5 @@ serenity = { version = "0.11.7", features = [
     "rustls_backend",
     "http"
 ] }
-songbird = "0.3.2"
+songbird = { version = "0.3.2", features = ["yt-dlp"] }
 tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }

@@ -1,49 +1,81 @@
 use serenity::{
     prelude::*,
+    model::channel::Message,
     framework::standard::{
-        Args, CommandResult,
+        CommandResult,
         macros::command,
     },
 };
 use songbird::{
     input::ytdl,
-    tracks::PlayMode,
 };
-use std::sync::Arc;
 
 #[command]
-async fn play(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
-    // Check if the user is in a voice channel.
-    let guild_id = match msg.guild_id {
-        Some(id) => id,
+async fn play(ctx: &Context, msg: &Message) -> CommandResult {
+    println!("Received play command");
+
+    let guild = match msg.guild(&ctx.cache) {
+        Some(guild) => {
+            println!("Guild found");
+            guild
+        },
         None => {
+            println!("Play command is not in a server with voice channels.");
             msg.channel_id.say(&ctx.http, "This command can only be used in a server with voice channels.").await?;
             return Ok(());
         }
     };
 
-    // Get the user's voice channel.
-    let voice_state = match msg.author.voice_channel(&ctx.cache) {
-        Some(state) => state,
+    let author_id = msg.author.id;
+
+    let voice_state = match guild.voice_states.get(&author_id) {
+        Some(state) => {
+            println!("User's voice state found");
+            state.clone()
+        },
         None => {
+            println!("User is not in a voice channel.");
             msg.channel_id.say(&ctx.http, "You must be in a voice channel to use this command.").await?;
             return Ok(());
         }
     };
 
-    // Connect to the user's voice channel.
-    let manager = songbird::get(&ctx).await.unwrap();
-    let handler_lock = manager.join(guild_id, voice_state.channel_id).await;
+    let manager = match songbird::get(&ctx).await {
+        Some(manager) => {
+            println!("Songbird manager obtained");
+            manager
+        },
+        None => {
+            println!("Failed to obtain Songbird manager");
+            return Ok(());
+        }
+    };
 
-    if let Some(mut handler) = handler_lock {
-        // Parse the YouTube URL from command arguments.
-        let url = args.rest();
+    let (handler_lock, success) = manager.join(guild.id, voice_state.channel_id.unwrap()).await;
 
-        // Load the audio track from the YouTube URL.
-        let source = ytdl(url).await?;
+    if let Err(e) = success {
+        println!("Error joining the voice channel: {:?}", e);
+        msg.channel_id.say(&ctx.http, format!("Error joining the voice channel: {:?}", e)).await?;
+        return Ok(());
+    }
 
-        // Play the track.
-        handler.play_only_source(source, PlayMode::default()).await?;
+    println!("Joined the voice channel");
+
+    let mut handler = handler_lock.lock().await;
+
+    let url = msg.content.replace("-play ", "");
+    println!("URL extracted: {}", url);
+
+    match ytdl(url).await {
+        Ok(source) => {
+            println!("YouTube source obtained");
+            let _track_handle = handler.play_only_source(source);
+            println!("Track is now playing");
+        },
+        Err(e) => {
+            println!("Error loading YTDL source: {:?}", e);
+            msg.channel_id.say(&ctx.http, format!("Error loading YTDL source: {:?}", e)).await?;
+        }
     }
 
     Ok(())
