@@ -2,6 +2,7 @@
 //! Will printout a message if updated by a user.
 use dotenv::dotenv;
 use std::env;
+use songbird::SerenityInit;
 
 use serenity::model::id::{ChannelId, MessageId};
 use serenity::{
@@ -31,6 +32,7 @@ async fn main() {
     let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
     let mut client = Client::builder(token, intents)
         .event_handler(Handler)
+        .register_songbird()
         .framework(framework) // framework is now used here after all configurations
         .await
         .expect("Error creating client");
