@@ -50,7 +50,7 @@ async fn main() {
 
 #[command]
 async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "Happy birthday!").await?;
+    msg.reply(ctx, "pong!").await?;
 
     Ok(())
 }
@@ -157,10 +157,10 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         for message in messages.iter() {
             all_messages.push(message.clone());
         }
+        current_run+=1;
         if citter <= current_run{
             break;
         }
-        current_run+=1;
     }
     let mut i = 0;
     // create vector of users and count messages like this {user, count}
