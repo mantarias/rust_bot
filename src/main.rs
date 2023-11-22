@@ -57,7 +57,7 @@ async fn main() {
                 .await
             {
                 message
-                    .reply(&client.cache_and_http.http, "Bot restarted successfully!")
+                    .reply(&client.cache_and_http.http, "Bot restarted successfully! ty for you waiting")
                     .await;
                 fs::remove_file("update.txt").expect("Could not remove update.txt");
             }
