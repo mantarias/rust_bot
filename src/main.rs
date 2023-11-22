@@ -17,7 +17,7 @@ use std::process::Command;
 
 
 #[group]
-#[commands(ping, echo, ustatus, status, stats, updat, test)]
+#[commands(ping, echo, ustatus, status, stats, update, test)]
 struct General;
 
 struct Handler;
