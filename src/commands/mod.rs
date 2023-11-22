@@ -5,12 +5,11 @@ pub mod status;
 pub mod test;
 pub mod update;
 pub mod ustatus;
-// ... other command modules
 
 use self::{
     echo::*,
     ping::*,
-    stats::*, // ... use other commands
+    stats::*,
     status::*,
     test::*,
     update::*,

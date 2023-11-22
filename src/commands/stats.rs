@@ -7,10 +7,6 @@ use serenity::{
     },
 };
 use std::collections::HashMap;
-
-
-
-
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     let channel_id = msg.channel_id;

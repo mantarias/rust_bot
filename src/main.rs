@@ -1,3 +1,5 @@
+//! This file is the main entry point for the bot. It sets up the bot and starts it.
+//! Will printout a message if updated by a user.
 use dotenv::dotenv;
 use std::env;
 
