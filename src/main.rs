@@ -1,0 +1,196 @@
+use serenity::{
+    async_trait,
+    framework::standard::{
+        macros::{command, group},
+        CommandResult, StandardFramework,
+    },
+    model::{channel::Message, gateway::GatewayIntents},
+    prelude::*,
+};
+use std::env;
+use dotenv::dotenv;
+use reqwest;
+use serenity::builder::GetMessages;
+use serenity::model::id::{ChannelId, MessageId};
+use std::collections::HashMap;
+
+
+#[group]
+#[commands(ping, echo, ustatus, status, stats)]
+struct General;
+
+struct Handler;
+
+#[async_trait]
+impl EventHandler for Handler {}
+
+#[tokio::main]
+async fn main() {
+    // Configure the client with the bot's prefix and commands
+    let framework = StandardFramework::new()
+        .group(&GENERAL_GROUP)
+        .configure(|c| c.prefix("-")); // set the bot's prefix to "~"
+
+    // Login with a bot token from the environment
+
+    dotenv().ok();
+    let token = env::var("DISCORD_BOT_TOKEN").expect("Expected a token in the environment");
+    let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
+    let mut client = Client::builder(token, intents)
+        .event_handler(Handler)
+        .framework(framework) // framework is now used here after all configurations
+        .await
+        .expect("Error creating client");
+
+    // Start listening for events by starting a single shard
+    if let Err(why) = client.start().await {
+        println!("An error occurred while running the client: {:?}", why);
+    }
+}
+
+#[command]
+async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.reply(ctx, "Happy birthday!").await?;
+
+    Ok(())
+}
+
+#[command]
+async fn echo(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.reply(ctx, &msg.content.replacen("-echo", "", 1)).await?;
+    Ok(())
+}
+
+
+#[command]
+async fn ustatus(ctx: &Context, msg: &Message) -> CommandResult {
+    let res: String;
+
+    match reqwest::get("https://uninotes.mantarias.com").await {
+        Ok(response) => {
+            if response.status().is_success() {
+                res = "uninotes is alive".to_string();
+            } else {
+                res = format!("uninotes responded with status: {}", response.status());
+            }
+        }
+        Err(_) => {
+            res = "uninotes is not reachable".to_string();
+        }
+    }
+
+    msg.reply(ctx, res).await?;
+    Ok(())
+}
+
+#[command]
+async fn status(ctx: &Context, msg: &Message) -> CommandResult {
+    let res: String;
+    let mut site = msg.content.replacen("-status ", "", 1);
+    site = if site.starts_with("https") { site } else { format!("http://{}", site) };
+
+
+    match reqwest::get(site.clone()).await {
+        Ok(response) => {
+            if response.status().is_success() {
+                res = format!("{} is alive", site);
+            } else {
+                res = format!("{} responded with status: {}", site, response.status());
+            }
+        }
+        Err(_) => {
+            res = format!("{} is not reachable", site);
+        }
+    }
+
+    msg.reply(ctx, res).await?;
+    Ok(())
+}
+
+
+#[command]
+async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
+    let channel_id = msg.channel_id;
+    channel_id.broadcast_typing(&ctx.http).await?;
+    let mut last_message_id = None;
+    let mut all_messages = Vec::new();
+    // parse to int
+
+    
+    let count =  msg.content.replacen("-stats ", "", 1);
+    // part count to int with error handeling
+    let count: u64 = match count.parse() {
+        Ok(n) => n,
+        Err(_) => {
+            msg.reply(ctx, "Please enter a valid number").await?;
+            return Ok(());
+        }
+    };
+    let mut  citter = 0;    
+    let limitt = if count < 100 {count % 100} else {citter = count / 100; 100};
+    let mut current_run : u64 = 0;
+
+    loop {
+        let messages = channel_id.messages(&ctx.http, |retriever| {
+            retriever.limit(limitt); // Set to the maximum limit
+            if let Some(message_id) = last_message_id {
+                retriever.before(message_id); // Fetch messages before the last one we got
+            }
+            retriever
+        }).await?;
+
+        // Break the loop if no more messages are fetched
+        if messages.is_empty() {
+            break;
+        }
+
+        // Save the ID of the last message in this batch for the next iteration with error handeling
+        last_message_id = match messages.last() {
+            Some(message) => Some(message.id),
+            None => {
+                msg.reply(ctx, "Something went wrong").await?;
+                return Ok(());
+            }
+        };
+
+        // Process and store messages
+        for message in messages.iter() {
+            all_messages.push(message.clone());
+        }
+        if citter <= current_run{
+            break;
+        }
+    }
+    let mut i = 0;
+    // create vector of users and count messages like this {user, count}
+    let mut message_counts: HashMap<String, i32> = HashMap::new();
+
+    
+    for message in &all_messages {
+        println!("{} {}: {}",i,  message.author.name, message.content); 
+        i+=1;
+        // if message.author.name is in message_counts add 1 to count else add user to message_counts
+        if message_counts.contains_key(&message.author.name) {
+            *message_counts.entry(message.author.name.clone()).or_insert(0) += 1;
+        } else {
+            message_counts.insert(message.author.name.clone(), 1);
+        }
+    }
+
+    // Format, sort and save the best 10 users
+    let mut output = String::new();
+    let mut best_users = Vec::new();
+    for (author, count) in message_counts.iter() {
+        best_users.push((author, count));
+    }
+    best_users.sort_by(|a, b| b.1.cmp(a.1));
+    for (author, count) in best_users.iter().take(10) {
+        output.push_str(format!("{}: {}\n", author, count).as_str());
+    }
+    
+
+    // Now all_messages contains more than the initial limit
+    // You can process them as needed
+    msg.reply(ctx, output).await?;
+    Ok(())
+}
