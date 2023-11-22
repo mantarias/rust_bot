@@ -17,7 +17,7 @@ use std::process::Command;
 
 
 #[group]
-#[commands(ping, echo, ustatus, status, stats, update)]
+#[commands(ping, echo, ustatus, status, stats, updat, test)]
 struct General;
 
 struct Handler;
@@ -202,7 +202,7 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
         // Create a Command to represent the program to be executed
         msg.reply(ctx, "updating").await?;
         let mut command = Command::new("systemctl");
-
+        
         // Add any arguments to the command
         command.arg("restart").arg("rustbot.service");
     
@@ -220,4 +220,9 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
         }
         msg.reply(ctx, "something went wrong, check the logs or try again").await?;
         Ok(())
+}
+#[command]
+async fn test(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.reply(ctx, &msg.id);
+    Ok(())
 }
