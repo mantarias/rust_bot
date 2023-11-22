@@ -13,10 +13,11 @@ use reqwest;
 use serenity::builder::GetMessages;
 use serenity::model::id::{ChannelId, MessageId};
 use std::collections::HashMap;
+use std::process::Command;
 
 
 #[group]
-#[commands(ping, echo, ustatus, status, stats)]
+#[commands(ping, echo, ustatus, status, stats, update)]
 struct General;
 
 struct Handler;
@@ -194,4 +195,29 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     // You can process them as needed
     msg.reply(ctx, output).await?;
     Ok(())
+}
+
+#[command]
+async fn update(ctx: &Context, msg: &Message) -> CommandResult {
+        // Create a Command to represent the program to be executed
+        msg.reply(ctx, "updating").await?;
+        let mut command = Command::new("systemctl");
+
+        // Add any arguments to the command
+        command.arg("restart").arg("rustbot.service");
+    
+        // Execute the command, which returns a Result containing the child process
+        match command.spawn() {
+            Ok(mut child) => {
+                // Wait for the command to complete and get the exit status, send message if error
+
+                match child.wait() {
+                    Ok(status) => println!("Exited with status: {}", status),
+                    Err(e) => eprintln!("Failed to wait for command: {}", e),
+                    }
+            }
+            Err(e) => eprintln!("Failed to execute command: {}", e),
+        }
+        msg.reply(ctx, "something went wrong, check the logs or try again").await?;
+        Ok(())
 }
