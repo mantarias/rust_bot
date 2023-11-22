@@ -25,7 +25,7 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
 
     // Edit the response message with latency information.
     response.edit(&ctx.http, |m| {
-        m.content(format!("Pong! Round-trip latency: {:2?}", latency))
+        m.content(format!("Pong! Round-trip latency: {:?}", latency))
     }).await?;
 
     Ok(())
