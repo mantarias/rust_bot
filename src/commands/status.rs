@@ -1,3 +1,4 @@
+//! check if a site is alive
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,

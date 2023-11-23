@@ -11,46 +11,50 @@ use plotters::prelude::*;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use plotters::prelude::full_palette::ORANGE;
+use rand::Rng; // Import Rng trait
 
-// Define a synchronous function to create and save the graph
+
+use plotters::coord::Shift;
+
 fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let mut best_users: Vec<_> = message_counts.iter().collect();
-    best_users.sort_by(|a, b| b.1.cmp(&a.1));
+    let root_area = BitMapBackend::new(&filename, (950, 700)).into_drawing_area();
+    root_area.fill(&WHITE).unwrap();
+    let title_style = TextStyle::from(("sans-serif", 30).into_font()).color(&(BLACK));
+    root_area.titled("Message Statistics", title_style).unwrap();
 
-    let max_count = *best_users.iter().map(|(_, count)| *count).max().unwrap_or(&0);
-    let count_length = best_users.len();
+    let dims = root_area.dim_in_pixel();
+    let center = (dims.0 as i32 / 2, dims.1 as i32 / 2);
+    let radius = 300.0;
 
-    let root = BitMapBackend::new(filename, (1024, 768)).into_drawing_area();
-    root.fill(&WHITE)?;
+    // Convert HashMap into vectors for labels and sizes
+    let (labels, sizes): (Vec<_>, Vec<_>) = message_counts.iter().map(|(name, count)| (format!("{}:{}",name.as_str(), count.to_string()), *count as f64)).unzip();
 
-    let mut chart = ChartBuilder::on(&root)
-        .caption("User Message Count", ("sans-serif", 50))
-        .x_label_area_size(50)
-        .y_label_area_size(50)
-        .build_cartesian_2d(0..count_length, 0..max_count)?;
+    // Generate a random color for each label
+    let mut rng = rand::thread_rng();
+    let colors: Vec<_> = labels.iter().map(|_| {
+        RGBColor(rng.gen_range(0..255), rng.gen_range(0..255), rng.gen_range(0..255))
+    }).collect();
 
-    chart.configure_mesh()
-        .x_labels(count_length)
-        .x_label_formatter(&|x| {
-            if *x < best_users.len() {
-                best_users[*x as usize].0.clone()
-            } else {
-                String::new() // Return an empty string if out of bounds
-            }
-        })
-        .x_desc("Username")
-        .y_desc("Message Count")
-        .draw()?;
+    let mut pie = Pie::new(&center, &radius, &sizes, &colors, &labels);
+    pie.start_angle(66.0);
 
-    chart.draw_series(
-        Histogram::vertical(&chart)
-            .style(BLUE.filled())
-            .data(best_users.iter().enumerate().map(|(idx, (_, count))| (idx, **count))),
-    )?;
+    pie.percentages((("sans-serif", radius * 0.08).into_font()).color(&BLACK));
+    root_area.draw(&pie)?;
 
-    root.present()?;
+    // Draw labels to the rightvscode-file://vscode-app/c:/Users/manta/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html
+    let label_area = root_area.margin(10, 10, 10, 10).shrink((0, 0), (150, dims.1 as i32));
+        for (i, label) in labels.iter().enumerate() {
+        label_area.draw_text(
+            label,
+            &TextStyle::from(("sans-serif", 35).into_font()).color(&colors[i]),
+            (0, i as i32 * 35),
+        )?;
+    }
+
     Ok(())
 }
+
 
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
@@ -96,7 +100,8 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     }
 
     // Create the graph synchronously
-    create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
+    // create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
+    create_and_save_graph(&message_counts, "output.png");
 
     // Send the image to the Discord channel
     let path = Path::new("output.png");

@@ -1,3 +1,4 @@
+//! echoes back the message sent to it
 use serenity::{
     framework::standard::{
         macros::command,

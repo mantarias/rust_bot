@@ -1,3 +1,4 @@
+//! creates a poll with reactions
 use serenity::{
     prelude::*,
     model::channel::Message,
@@ -8,25 +9,33 @@ use serenity::{
 };
 use serenity::model::prelude::ReactionType;
 
-
 #[command]
 async fn poll(ctx: &Context, msg: &Message) -> CommandResult {
-    // Remove the command itself and split the remaining content into options.
-    let content = &msg.content;
-    let options: Vec<&str> = content.splitn(11, " ").collect(); // Allowing up to 10 options.
-
-    // Check if at least two options were provided (question and one option).
-    if options.len() < 3 {
+    // Split the message content into two parts: the command and the rest.
+    let split_content: Vec<&str> = msg.content.splitn(2, ' ').collect();
+    if split_content.len() != 2 {
         msg.channel_id.say(&ctx.http, "Please provide a question and at least one option for the poll.").await?;
         return Ok(());
     }
 
-    // Extract the question and options.
-    let question = options[1];
-    let options = &options[2..]; // Skip the command and question.
+    // Further split the second part into the question and options, using '?' as a delimiter.
+    let question_and_options: Vec<&str> = split_content[1].splitn(2, '?').collect();
+    if question_and_options.len() != 2 {
+        msg.channel_id.say(&ctx.http, "Please provide a question followed by a '?' and then the options.").await?;
+        return Ok(());
+    }
+
+    let question = question_and_options[0].trim();
+    let options: Vec<&str> = question_and_options[1].split_whitespace().collect(); // Split the options by whitespace.
+
+    // Check if at least one option was provided.
+    if options.is_empty() {
+        msg.channel_id.say(&ctx.http, "Please provide at least one option for the poll.").await?;
+        return Ok(());
+    }
 
     // Create the poll message with reactions for each option.
-    let mut poll_message = format!("**Poll: {}**\n\n", question);
+    let mut poll_message = format!("**Poll: {}?**\n\n", question);
 
     // Add reactions for each option.
     let emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];

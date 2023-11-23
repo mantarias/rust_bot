@@ -1,3 +1,4 @@
+//! Command for flipping a coin.
 use serenity::{
     prelude::*,
     model::channel::Message,

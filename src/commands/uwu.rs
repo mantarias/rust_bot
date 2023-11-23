@@ -1,30 +1,24 @@
-use serenity::{
-    prelude::*,
-    model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
-};
+//! Commands to convert text to "uwu" language.
 use rand::seq::SliceRandom;
+use serenity::{
+    framework::standard::{macros::command, CommandResult},
+    model::channel::Message,
+    prelude::*,
+};
 
 #[command]
 async fn uwu(ctx: &Context, msg: &Message) -> CommandResult {
     // Check if the message is a reply and if it starts with "-uwu".
     if let Some(reference) = msg.referenced_message.clone() {
-        if msg.content.to_lowercase().starts_with("-uwu") {
-            // Get the content of the replied message.
-            let original_content = reference.content;
+        // Get the content of the replied message.
+        let original_content = reference.content;
 
-            // Convert the content to "uwu" language with random emoticons.
-            let uwu_content = uwunize(&original_content);
+        // Convert the content to "uwu" language with random emoticons.
+        let uwu_content = uwunize(&original_content);
 
-            // Send the "uwu" version as a reply.
-            msg.delete(&ctx.http).await?;
-            msg.channel_id.say(&ctx.http, &uwu_content).await?;
-
-            // Delete the invoking message.
-        }
+        // Send the "uwu" version as a reply.
+        msg.delete(&ctx.http).await?;
+        msg.channel_id.say(&ctx.http, &uwu_content).await?;
     }
 
     Ok(())

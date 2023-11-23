@@ -1,3 +1,4 @@
+//! plays a song from a YouTube URL
 use serenity::{
     prelude::*,
     model::channel::Message,

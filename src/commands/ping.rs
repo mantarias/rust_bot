@@ -2,14 +2,11 @@
 //!
 //! The `ping` command simply calculates the round-trip latency between the bot and the Discord API.
 use serenity::{
-    prelude::*,
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
+    prelude::*,
 };
-use std::time::{Instant};
+use std::time::Instant;
 
 #[command]
 async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
@@ -24,9 +21,11 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
     let latency = end_time.duration_since(start_time);
 
     // Edit the response message with latency information.
-    response.edit(&ctx.http, |m| {
-        m.content(format!("Pong! Round-trip latency: {:?}", latency))
-    }).await?;
+    response
+        .edit(&ctx.http, |m| {
+            m.content(format!("Pong! Round-trip latency: {:?}", latency))
+        })
+        .await?;
 
     Ok(())
 }

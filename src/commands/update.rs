@@ -1,3 +1,4 @@
+//! updates the bot from github
 use serenity::{
     prelude::*,
     model::channel::Message,

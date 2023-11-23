@@ -1,3 +1,4 @@
+//! Returns the profile picture of a pinged user.
 use serenity::{
     prelude::*,
     model::channel::Message,
