@@ -20,7 +20,7 @@ struct ResponseData {
 
 #[derive(Deserialize)]
 struct QueryParams {
-    page: String,
+    page: Option<String>,
 }
 
 pub async fn run_server() {
@@ -37,7 +37,8 @@ pub async fn run_server() {
 }
 
 async fn page_handler(Query(params): Query<QueryParams>) -> Result<Html<String>, (StatusCode, String)> {
-    let path = format!("{}{}", "src/web/www/", params.page);
+    let page = params.page.unwrap_or_else(|| "index".to_string());
+    let path = format!("{}{}", "src/web/www/", page);
     let path = format!("{}{}", path, ".html");
     println!("{}", path);
 
@@ -70,5 +71,3 @@ async fn post_handler(Json(data): Json<PostData>) -> Json<ResponseData> {
     // Return JSON response
     Json(response)
 }
-
-
