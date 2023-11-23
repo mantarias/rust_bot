@@ -1624,6 +1624,7 @@ dependencies = [
  "dotenv",
  "plotters",
  "rand",
+ "regex",
  "reqwest",
  "serenity",
  "songbird",

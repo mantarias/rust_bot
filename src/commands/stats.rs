@@ -1,26 +1,32 @@
 use plotters::prelude::full_palette::ORANGE;
 use plotters::prelude::*;
 use rand::Rng;
+use serenity::model::id::ChannelId;
+use serenity::model::mention::Mention;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
-    model::channel::Message,
+    model::channel::{self, Message},
     prelude::*,
 };
 use std::collections::HashMap;
 use std::fs::File;
+use std::future::Future;
 use std::io::Read;
 use std::path::Path; // Import Rng trait
 
 use plotters::coord::Shift;
 
 fn create_and_save_graph(
-    message_counts: &HashMap<String, i32>,
+    message_counts: &Vec<(String, i32)>,
     filename: &str,
+    channel_name: &str, // New parameter for the channel name
 ) -> Result<(), Box<dyn std::error::Error>> {
     let root_area = BitMapBackend::new(&filename, (950, 700)).into_drawing_area();
     root_area.fill(&WHITE).unwrap();
     let title_style = TextStyle::from(("sans-serif", 30).into_font()).color(&(BLACK));
-    root_area.titled("Message Statistics", title_style).unwrap();
+    root_area
+        .titled(&format!("Message Statistics for #{}", channel_name), title_style) // Integrating the channel name into the title
+        .unwrap();
 
     let dims = root_area.dim_in_pixel();
     let center = (dims.0 as i32 / 2, dims.1 as i32 / 2);
@@ -62,28 +68,48 @@ fn create_and_save_graph(
         label_area.draw_text(
             label,
             &TextStyle::from(("sans-serif", 35).into_font()).color(&colors[i]),
-            (0, i as i32 * 35),
+            (0, i as i32 * 33),
         )?;
     }
 
     Ok(())
 }
 
+use regex::Regex;
+
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
-    // send message to indicate that the bot is working
     let mut response = msg.channel_id.say(&ctx.http, "Working on it!...").await?;
-
-    let channel_id = msg.channel_id;
-    channel_id.broadcast_typing(&ctx.http).await?;
-
-    let requested_count: u64 = match msg.content.replacen("-stats ", "", 1).parse() {
-        Ok(num) => num,
-        Err(_) => {
-            msg.reply(ctx, "Please enter a valid number").await?;
+    let args: Vec<&str> = msg.content.split_whitespace().collect();
+    let mut requested_count = 100;
+    let mut channel_id = msg.channel_id;
+    if args.len() > 1 {
+        if let Ok(count) = args[1].parse::<u64>() {
+            requested_count = count;
+        } else {
+            msg.reply(ctx, "Please enter a valid number for message count.")
+                .await?;
             return Ok(());
         }
-    };
+
+        if args.len() > 2 {
+            let channel_arg = args[2];
+            let re = Regex::new(r"<#(\d+)>").unwrap();
+
+            if let Some(captures) = re.captures(channel_arg) {
+                if let Some(id_match) = captures.get(1) {
+                    if let Ok(id) = id_match.as_str().parse::<u64>() {
+                        channel_id = ChannelId(id);
+                    }
+                }
+            } else if let Ok(id) = channel_arg.parse::<u64>() {
+                channel_id = ChannelId(id);
+            } else {
+                msg.reply(ctx, "Invalid channel format, using current channel.")
+                    .await?;
+            }
+        }
+    }
 
     let mut last_message_id = None;
     let mut all_messages = Vec::new();
@@ -102,15 +128,14 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
             .await?;
         response
             .edit(&ctx.http, |m| {
-                m.content(format!("Working on it! step {} of {}",total_fetched,requested_count))
+                m.content(format!(
+                    "Working on it! step {} of {}",
+                    total_fetched, requested_count
+                ))
             })
             .await?;
         if messages.is_empty() {
-            response
-                .edit(&ctx.http, |m| {
-                    m.content(format!("Done collecting messages starting making pie"))
-                })
-                .await?;
+            
             break;
         }
 
@@ -118,15 +143,34 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         total_fetched += messages.len() as u64;
         all_messages.extend(messages);
     }
-
+    response
+    .edit(&ctx.http, |m| {
+        m.content(format!("Done collecting messages starting making pie"))
+    })
+    .await?;
     let mut message_counts: HashMap<String, i32> = HashMap::new();
     for message in all_messages {
         *message_counts.entry(message.author.name).or_insert(0) += 1;
     }
 
+    // sort the hashmap by value
+    let mut message_counts: Vec<_> = message_counts.into_iter().collect();
+    message_counts.sort_by(|a, b| b.1.cmp(&a.1));
+
+    // Limit the number of slices to 19 and combine the rest into one slice as the 20th slice
+    if message_counts.len() > 19 {
+        let mut other_count = 0;
+        for i in 19..message_counts.len() {
+            other_count += message_counts[i].1;
+        }
+        message_counts.truncate(19); // Keep the first 19 elements
+        message_counts.push(("Other".to_string(), other_count));
+    }
+
     // Create the graph synchronously
     // create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
-    create_and_save_graph(&message_counts, "output.png");
+    let channel_name = channel_id.to_channel(&ctx.http).await?.guild().unwrap().name;
+    create_and_save_graph(&message_counts, "output.png", &channel_name);
 
     // Send the image to the Discord channel
     let path = Path::new("output.png");
@@ -135,9 +179,12 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     file.read_to_end(&mut buffer)
         .expect("Unable to read the file");
 
-    channel_id
+    msg.channel_id
         .send_files(&ctx.http, vec![(&buffer as &[u8], "output.png")], |m| {
-            m.content("Here is the statistics graph:")
+            m.content(format!(
+                "Here is the statistics graph for {}",
+                channel_id.mention()
+            ))
         })
         .await
         .expect("Unable to send message");
