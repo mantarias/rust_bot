@@ -1,23 +1,22 @@
+use plotters::prelude::full_palette::ORANGE;
+use plotters::prelude::*;
+use rand::Rng;
 use serenity::{
-    framework::standard::{
-        macros::command,
-        CommandResult,
-    },
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
     prelude::*,
 };
 use std::collections::HashMap;
-use plotters::prelude::*;
 use std::fs::File;
 use std::io::Read;
-use std::path::Path;
-use plotters::prelude::full_palette::ORANGE;
-use rand::Rng; // Import Rng trait
-
+use std::path::Path; // Import Rng trait
 
 use plotters::coord::Shift;
 
-fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn create_and_save_graph(
+    message_counts: &HashMap<String, i32>,
+    filename: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let root_area = BitMapBackend::new(&filename, (950, 700)).into_drawing_area();
     root_area.fill(&WHITE).unwrap();
     let title_style = TextStyle::from(("sans-serif", 30).into_font()).color(&(BLACK));
@@ -28,23 +27,38 @@ fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) 
     let radius = 300.0;
 
     // Convert HashMap into vectors for labels and sizes
-    let (labels, sizes): (Vec<_>, Vec<_>) = message_counts.iter().map(|(name, count)| (format!("{}:{}",name.as_str(), count.to_string()), *count as f64)).unzip();
+    let (labels, sizes): (Vec<_>, Vec<_>) = message_counts
+        .iter()
+        .map(|(name, count)| {
+            (
+                format!("{}:{}", name.as_str(), count.to_string()),
+                *count as f64,
+            )
+        })
+        .unzip();
 
     // Generate a random color for each label
     let mut rng = rand::thread_rng();
-    let colors: Vec<_> = labels.iter().map(|_| {
-        RGBColor(rng.gen_range(0..255), rng.gen_range(0..255), rng.gen_range(0..255))
-    }).collect();
+    let colors: Vec<_> = labels
+        .iter()
+        .map(|_| {
+            RGBColor(
+                rng.gen_range(0..255),
+                rng.gen_range(0..255),
+                rng.gen_range(0..255),
+            )
+        })
+        .collect();
 
     let mut pie = Pie::new(&center, &radius, &sizes, &colors, &labels);
     pie.start_angle(66.0);
 
     pie.percentages((("sans-serif", radius * 0.08).into_font()).color(&BLACK));
     root_area.draw(&pie)?;
-
-    // Draw labels to the rightvscode-file://vscode-app/c:/Users/manta/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html
-    let label_area = root_area.margin(10, 10, 10, 10).shrink((0, 0), (150, dims.1 as i32));
-        for (i, label) in labels.iter().enumerate() {
+    let label_area = root_area
+        .margin(10, 10, 10, 10)
+        .shrink((0, 0), (150, dims.1 as i32));
+    for (i, label) in labels.iter().enumerate() {
         label_area.draw_text(
             label,
             &TextStyle::from(("sans-serif", 35).into_font()).color(&colors[i]),
@@ -55,9 +69,11 @@ fn create_and_save_graph(message_counts: &HashMap<String, i32>, filename: &str) 
     Ok(())
 }
 
-
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
+    // send message to indicate that the bot is working
+    let mut response = msg.channel_id.say(&ctx.http, "Working on it!...").await?;
+
     let channel_id = msg.channel_id;
     channel_id.broadcast_typing(&ctx.http).await?;
 
@@ -84,8 +100,17 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
                 retriever
             })
             .await?;
-
+        response
+            .edit(&ctx.http, |m| {
+                m.content(format!("Working on it! step {} of {}",total_fetched,requested_count))
+            })
+            .await?;
         if messages.is_empty() {
+            response
+                .edit(&ctx.http, |m| {
+                    m.content(format!("Done collecting messages starting making pie"))
+                })
+                .await?;
             break;
         }
 
@@ -107,11 +132,15 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     let path = Path::new("output.png");
     let mut file = File::open(&path).expect("Unable to open the file");
     let mut buffer = Vec::new();
-    file.read_to_end(&mut buffer).expect("Unable to read the file");
+    file.read_to_end(&mut buffer)
+        .expect("Unable to read the file");
 
-    channel_id.send_files(&ctx.http, vec![(&buffer as &[u8], "output.png")], |m| {
-        m.content("Here is the statistics graph:")
-    }).await.expect("Unable to send message");
+    channel_id
+        .send_files(&ctx.http, vec![(&buffer as &[u8], "output.png")], |m| {
+            m.content("Here is the statistics graph:")
+        })
+        .await
+        .expect("Unable to send message");
 
     Ok(())
 }
