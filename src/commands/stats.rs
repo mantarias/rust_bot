@@ -170,7 +170,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     // Create the graph synchronously
     // create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
     let channel_name = channel_id.to_channel(&ctx.http).await?.guild().unwrap().name;
-    create_and_save_graph(&message_counts, "output.png", &channel_name);
+    let _ = create_and_save_graph(&message_counts, "output.png", &channel_name);
 
     // Send the image to the Discord channel
     let path = Path::new("output.png");

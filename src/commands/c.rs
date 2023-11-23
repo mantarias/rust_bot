@@ -8,9 +8,11 @@ use serenity::{
     prelude::*,
 };
 
+#[allow(unused_variables)]
 #[command]
 async fn c(ctx: &Context, msg: &Message) -> CommandResult {
     let args: Vec<&str> = msg.content.split_whitespace().collect();
+
 
     Ok(())
 }
