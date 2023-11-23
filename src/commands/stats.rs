@@ -1,20 +1,20 @@
-use plotters::prelude::full_palette::ORANGE;
+
 use plotters::prelude::*;
 use rand::Rng;
 use serenity::model::id::ChannelId;
-use serenity::model::mention::Mention;
+
 use serenity::{
     framework::standard::{macros::command, CommandResult},
-    model::channel::{self, Message},
+    model::channel::Message,
     prelude::*,
 };
 use std::collections::HashMap;
 use std::fs::File;
-use std::future::Future;
+
 use std::io::Read;
 use std::path::Path; // Import Rng trait
 
-use plotters::coord::Shift;
+
 
 fn create_and_save_graph(
     message_counts: &Vec<(String, i32)>,

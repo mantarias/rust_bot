@@ -10,7 +10,10 @@ use serenity::{
 };
 use std::fs;
 use std::str::FromStr;
+
 mod commands;
+mod web;
+
 use commands::GENERAL_GROUP;
 
 struct Handler;
@@ -20,6 +23,12 @@ impl EventHandler for Handler {}
 
 #[tokio::main]
 async fn main() {
+    // Start the web server in a separate async task
+    tokio::spawn(async {
+        web::run_server().await;
+    });
+
+
     // Configure the client with the bot's prefix and commands
     let framework = StandardFramework::new()
         .group(&GENERAL_GROUP)
@@ -33,6 +42,7 @@ async fn main() {
     let mut client = Client::builder(token, intents)
         .event_handler(Handler)
         .register_songbird()
+
         .framework(framework) // framework is now used here after all configurations
         .await
         .expect("Error creating client");
