@@ -2,7 +2,7 @@
 use serenity::{
     framework::standard::{
         macros::command,
-        CommandResult,
+        Args, CommandResult,
     },
     model::channel::Message,
     prelude::*,
@@ -10,9 +10,20 @@ use serenity::{
 
 #[allow(unused_variables)]
 #[command]
-async fn c(ctx: &Context, msg: &Message) -> CommandResult {
-    let args: Vec<&str> = msg.content.split_whitespace().collect();
+async fn c(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
+    let mut response = String::new();
+    let mut i = 1;
 
+    while !args.is_empty() {
+        if let Some(arg) = args.single_quoted::<String>().ok() {
+            response += &format!("arg{} = {}\n", i, arg);
+            i += 1;
+        }
+    }
+
+    if !response.is_empty() {
+        msg.reply(ctx, response).await?;
+    }
 
     Ok(())
 }

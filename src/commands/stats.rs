@@ -1,4 +1,3 @@
-
 use plotters::prelude::*;
 use rand::Rng;
 use serenity::model::id::ChannelId;
@@ -13,8 +12,6 @@ use std::fs::File;
 
 use std::io::Read;
 use std::path::Path; // Import Rng trait
-
-
 
 fn create_and_save_graph(
     message_counts: &Vec<(String, i32)>,
@@ -79,34 +76,43 @@ use regex::Regex;
 
 #[command]
 async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
-    let mut response = msg.channel_id.say(&ctx.http, "Working on it!...").await?;
+    let _response = msg.channel_id.say(&ctx.http, "Working on it!...").await?;
     let args: Vec<&str> = msg.content.split_whitespace().collect();
+
+    // Check the arguments' length
+    if args.len() <= 1 {
+        // Create a friendly and easy-to-understand message.
+        let friendly_msg = "Oh, it seems like you forgot to provide enough info.\n\nHere's how to use this command:\n\
+                        1. Use `-stats` followed by a number (for example: `-stats 100`).\n\
+                        2. You can also include a channel name (for example: `-stats #general 100`).\n\
+                        3. The order doesn't matter. You can put the number first (for example: `-stats 100 #general`).";
+
+        // Prompt the user to enter an argument
+        msg.channel_id.say(&ctx.http, &friendly_msg).await?;
+        return Ok(());
+    }
+    let mut response = msg.channel_id.say(&ctx.http, "Working on it!...").await?;
     let mut requested_count = 100;
     let mut channel_id = msg.channel_id;
     if args.len() > 1 {
-        if let Ok(count) = args[1].parse::<u64>() {
-            requested_count = count;
-        } else {
-            msg.reply(ctx, "Please enter a valid number for message count.")
-                .await?;
-            return Ok(());
-        }
-
-        if args.len() > 2 {
-            let channel_arg = args[2];
-            let re = Regex::new(r"<#(\d+)>").unwrap();
-
-            if let Some(captures) = re.captures(channel_arg) {
-                if let Some(id_match) = captures.get(1) {
-                    if let Ok(id) = id_match.as_str().parse::<u64>() {
-                        channel_id = ChannelId(id);
-                    }
-                }
-            } else if let Ok(id) = channel_arg.parse::<u64>() {
-                channel_id = ChannelId(id);
+        for arg in &args[1..] {
+            if let Ok(count) = arg.parse::<u64>() {
+                requested_count = count;
             } else {
-                msg.reply(ctx, "Invalid channel format, using current channel.")
-                    .await?;
+                let re = Regex::new(r"<#(\d+)>").unwrap();
+
+                if let Some(captures) = re.captures(arg) {
+                    if let Some(id_match) = captures.get(1) {
+                        if let Ok(id) = id_match.as_str().parse::<u64>() {
+                            channel_id = ChannelId(id);
+                        }
+                    }
+                } else if let Ok(id) = arg.parse::<u64>() {
+                    channel_id = ChannelId(id);
+                } else {
+                    msg.reply(ctx, "Invalid argument format, using current channel and default message count.")
+                        .await?;
+                }
             }
         }
     }
@@ -135,7 +141,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
             })
             .await?;
         if messages.is_empty() {
-            
+
             break;
         }
 
@@ -168,7 +174,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     }
 
     // Create the graph synchronously
-    // create_and_save_graph(&message_counts, "output.png").expect("Failed to create graph");
+    // create_and_save_graph(&message_counts, "output.png").expect("Failed to create
     let channel_name = channel_id.to_channel(&ctx.http).await?.guild().unwrap().name;
     let _ = create_and_save_graph(&message_counts, "output.png", &channel_name);
 
