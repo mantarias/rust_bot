@@ -36,7 +36,8 @@ pub async fn run_server(client: Client) {
             "CREATE TABLE IF NOT EXISTS commands (command_name text, command_response text)",
             &[],
         )
-        .await;
+        .await
+        .unwrap();
 
     let app = Router::new()
 
@@ -53,7 +54,7 @@ pub async fn run_server(client: Client) {
 }
 
 async fn page_handler(Query(params): Query<QueryParams>) -> Result<Html<String>, (StatusCode, String)> {
-    let page = params.page.unwrap_or_else(|| "index".to_string());
+    let page = params.page.unwrap_or_else(|| "static/index".to_string());
     let path = format!("{}{}", "src/web/www/", page);
     let path = format!("{}{}", path, ".html");
     println!("{}", path);
