@@ -2,3 +2,5 @@
 .env
 .env copy
 output.png
+/src/web/www/node_modules/
+src/web/www/package-lock.json
