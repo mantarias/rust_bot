@@ -27,7 +27,7 @@ impl EventHandler for Handler {}
 async fn main() {
     // Connect to the database.
     let (client, connection) =
-        tokio_postgres::connect("host=localhost port=5432 dbname=rustbot user=postgres", NoTls).await.unwrap();
+        tokio_postgres::connect("host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres", NoTls).await.unwrap();
 
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.

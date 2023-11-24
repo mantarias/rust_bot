@@ -40,11 +40,11 @@ pub async fn run_server(client: Client) {
         .unwrap();
 
     let app = Router::new()
-        .layer(Extension(Arc::new(client)))
+
         .route("/", get(page_handler))
         .route("/post", post(post_handler))
-        .route("/static/*path", get(static_handler));
-
+        .route("/static/*path", get(static_handler))
+        .layer(Extension(Arc::new(client)));
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
     axum::Server::bind(&addr)
@@ -75,7 +75,7 @@ async fn serve_html_file(path: &str) -> Result<Html<String>, (StatusCode, String
     }
 }
 
-async fn post_handler(Extension(client): Extension<Arc<Client>>, Json(data): Json<PostData>) -> Json<ResponseData> {
+async fn post_handler(client: Extension<Arc<Client>>, Json(data): Json<PostData>) -> Json<ResponseData> {
     println!("Received field1: {} and {}", data.field1, data.field2);
 
     let response = ResponseData {
