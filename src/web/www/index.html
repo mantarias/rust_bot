@@ -3,52 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Bot Dashboard</title>
-    <link href="static/output.css" rel="stylesheet"> <!-- Tailwind CSS with DaisyUI -->
-    <script>
-        // Function to toggle light/dark theme
-        function toggleTheme() {
-            const theme = document.documentElement.getAttribute('data-theme');
-            document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'light' : 'dark');
-        }
-    </script>
+    <title>Custom Command Creator</title>
+    <link href="static/output.css" rel="stylesheet"> <!-- Update with the correct path to your compiled Tailwind CSS -->
+    <link href="static/style.css" rel="stylesheet"> <!-- Update with the correct path to your compiled Tailwind CSS -->
 </head>
-<body data-theme="dark">
-<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content">
-    <div class="flex-1 px-2 mx-2">
-        <span class="text-lg font-bold">Discord Bot Dashboard</span>
-    </div>
-    <div class="flex-none">
-        <button class="btn btn-square btn-ghost" onclick="toggleTheme()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m4.38 3.12l-1.5 1.5M19 12h-2m3.12 4.38l-1.5-1.5M12 19v2m-4.38-3.12l1.5 1.5M5 12H3m2.88-4.38l1.5 1.5"></path>
-            </svg>
-        </button>
-    </div>
-</div>
-
+<body class="bg-base-100 text-primary">
 <div class="container mx-auto p-4">
-    <h1 class="text-5xl font-bold">Welcome to the Discord Bot Dashboard!</h1>
-    <p class="py-6">Manage your Discord bot settings and view statistics here.</p>
+    <h1 class="text-primary text-4xl mb-4 font-bold">Custom Command Creator</h1>
 
-    <form id="test" class="w-full max-w-lg">
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <input class="input input-bordered w-full" type="text" placeholder="Field 1" name="field1">
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <input class="input input-bordered w-full" type="text" placeholder="Field 2" name="field2">
+
+    <div class="mb-4">
+        <label for="command" class="block text-sm font-medium text-secondary">Command</label>
+        <input id="command" type="text" placeholder="Type here" class="input input-bordered input-primary w-full max-w-xs"/>
+    </div>
+
+    <div class="mb-4">
+        <label for="response" class="block text-sm font-medium text-secondary">Response</label>
+        <textarea id="response" class="textarea textarea-secondary w-6/12" rows="4" placeholder="Help echo: echo repearts back to you what you give it."></textarea>
+    </div>
+
+    <button class="btn btn-primary">Add Command</button>
+
+    <div class="mt-6">
+        <h2 class="text-xl font-semibold mb-2 text-accent">Your Commands</h2>
+        <!-- Dynamic list of commands will be displayed here -->
+        <div class="overflow-x-auto">
+            <div class="card w-96 bg-neutral text-neutral-content">
+                <div class="card-body items-center text-center">
+                    <input type="text" placeholder="Type here" class="input input-bordered input-warning w-full text-center"/>
+                    <textarea class="textarea textarea-secondary w-full h-full" placeholder="Help echo: echo repearts back to you what you give it."></textarea>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-error">Save Changes</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <button class="btn" type="submit">Submit</button>
-    </form>
-
-    <div id="commands" class="mt-6">
-        <h1 class="text-4xl font-bold">The custom commands you have created are listed below.</h1>
-        <!-- Commands will be listed here -->
     </div>
 </div>
 
-<script src="static/javascript.js"></script>
+<script src="static/javascript.js"></script> <!-- Update with the correct path to your JavaScript file -->
 </body>
 </html>

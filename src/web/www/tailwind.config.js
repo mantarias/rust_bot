@@ -7,23 +7,30 @@ module.exports = {
     ],
     plugins: [require("daisyui")], // Add DaisyUI as a plugin
 
-
     daisyui: {
         themes: [
             {
                 light: {
-                    primary: "#de691b",
-                    secondary: "#e8f4fc",
-                    accent: "#e67a33",
-                    neutral: "#072f45",
-                    "base-100": "#e3f3fc",
+                    "primary": "#00dbe6",
+                    "secondary": "#00a500",
+                    "accent": "#efb500",
+                    "neutral": "#141414",
+                    "base-100": "#fef9ff",
+                    "info": "#00abd6",
+                    "success": "#00a85f",
+                    "warning": "#ffaf00",
+                    "error": "#d00014",
                 },
                 dark: {
-                    primary: "#e46f21",
-                    secondary: "#030f17",
-                    accent: "#cc6119",
-                    neutral: "#082d45",
-                    "base-100": "#03121b",
+                    "primary": "#f59e0b",
+                    "secondary": "#facc15",
+                    "accent": "#4ade80",
+                    "neutral": "#3f2d29",
+                    "base-100": "#342c23",
+                    "info": "#7dd3fc",
+                    "success": "#a3e635",
+                    "warning": "#fc6000",
+                    "error": "#f43f5e",
                 },
             },
         ],
