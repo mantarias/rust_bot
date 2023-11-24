@@ -1,21 +1,21 @@
-use axum::{extract::{Query}, routing::get, Router, response::Html, http::StatusCode, Json};
+use axum::{body::Body, extract::{Query, Path}, http::{Response, StatusCode}, routing::get, routing::post, Router, Json};
+use serde_derive::{Deserialize, Serialize};
 use std::net::SocketAddr;
-use axum::routing::post;
-use tokio::fs::File;
+use std::path::PathBuf;
 use tokio::io::AsyncReadExt;
-use serde_derive::Deserialize;
-use serde_derive::Serialize;
+use axum::response::Html;
+use tokio::fs;
+
 
 #[derive(Deserialize)]
 struct PostData {
     field1: String,
-    field2: String
+    field2: String,
 }
 
 #[derive(Serialize)]
 struct ResponseData {
     message: String,
-    // Include any other data you want to send back
 }
 
 #[derive(Deserialize)]
@@ -26,7 +26,8 @@ struct QueryParams {
 pub async fn run_server() {
     let app = Router::new()
         .route("/", get(page_handler))
-        .route("/post", post(post_handler));
+        .route("/post", post(post_handler))
+        .route("/static/*path", get(static_handler));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
@@ -45,9 +46,8 @@ async fn page_handler(Query(params): Query<QueryParams>) -> Result<Html<String>,
     serve_html_file(&path).await
 }
 
-// Utility function to serve HTML files
 async fn serve_html_file(path: &str) -> Result<Html<String>, (StatusCode, String)> {
-    match File::open(path).await {
+    match tokio::fs::File::open(path).await {
         Ok(mut file) => {
             let mut contents = String::new();
             match file.read_to_string(&mut contents).await {
@@ -60,14 +60,25 @@ async fn serve_html_file(path: &str) -> Result<Html<String>, (StatusCode, String
 }
 
 async fn post_handler(Json(data): Json<PostData>) -> Json<ResponseData> {
-    println!("Received field1: {} and {}", data.field1,data.field2);
+    println!("Received field1: {} and {}", data.field1, data.field2);
 
-    // Create your response data
     let response = ResponseData {
-        message: format!("Received field1: {} and {}", data.field1,data.field2)
-        // Set other fields as needed
+        message: format!("Received field1: {} and {}", data.field1, data.field2),
     };
 
-    // Return JSON response
     Json(response)
+}
+
+async fn static_handler(Path(path): Path<PathBuf>) -> Result<Response<Body>, StatusCode> {
+    let path_str = path.to_str().unwrap().trim_start_matches('/'); // Trim the leading '/'
+    let file_path = PathBuf::from("src/web/www/static").join(path_str); // Assuming 'static' is your directory
+    serve_file(file_path).await
+}
+
+
+async fn serve_file(file_path: PathBuf) -> Result<Response<Body>, StatusCode> {
+    match fs::read(file_path).await {
+        Ok(contents) => Ok(Response::new(Body::from(contents))),
+        Err(_) => Err(StatusCode::NOT_FOUND),
+    }
 }
