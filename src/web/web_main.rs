@@ -68,8 +68,7 @@ async fn serve_html_file(path: &str) -> Result<Html<String>, (StatusCode, String
             let mut contents = String::new();
             match file.read_to_string(&mut contents).await {
                 Ok(_) => Ok(Html(contents)),
-                Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
-            }
+                Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),            }
         }
         Err(e) => Err((StatusCode::NOT_FOUND, e.to_string())),
     }
@@ -84,14 +83,15 @@ async fn post_handler(client: Extension<Arc<Client>>, Json(data): Json<PostData>
 
     client
         .execute(
-            "INSERT INTO hello (column_name) VALUES ($1)",
-            &[&"hello world"],
+            "INSERT INTO commands (command_name, command_response) VALUES ($1, $2)",
+            &[&data.field1,&data.field2],
         )
         .await
         .unwrap();
 
+
     let rows = client
-        .query("SELECT (column_name) FROM hello", &[])
+        .query("SELECT * FROM hello", &[])
         .await.expect("Failed to run query");
 
 // You can use this to print the value of 'column_name' in the first row
