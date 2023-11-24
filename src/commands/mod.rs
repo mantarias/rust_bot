@@ -27,6 +27,7 @@ pub mod uwu;
 pub mod play;
 pub mod poll;
 pub mod coinflip;
+pub mod c;
 
 
 use self::{
@@ -42,10 +43,11 @@ use self::{
     play::*,
     poll::*,
     coinflip::*,
+    c::*
 };
 
 use serenity::framework::standard::macros::group;
 
 #[group]
-#[commands(ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip)] // Add other commands here
+#[commands(ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip,c)] // Add other commands here
 struct General;
