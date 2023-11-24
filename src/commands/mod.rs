@@ -28,6 +28,7 @@ pub mod play;
 pub mod poll;
 pub mod coinflip;
 pub mod c;
+mod react;
 
 
 use self::{

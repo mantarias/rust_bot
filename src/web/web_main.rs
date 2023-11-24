@@ -36,8 +36,7 @@ pub async fn run_server(client: Client) {
             "CREATE TABLE IF NOT EXISTS commands (command_name text, command_response text)",
             &[],
         )
-        .await
-        .unwrap();
+        .await;
 
     let app = Router::new()
 
