@@ -497,18 +497,18 @@ html {
 }
 
 :root {
-  --p: 0.811 0.137923 201.257826;
-  --b2: 0.918506 0.008811 320.546542;
-  --b3: 0.849372 0.008148 320.546542;
-  --bc: 0.197528 0.001895 320.546542;
-  --pc: 0.1622 0.027585 201.257826;
-  --sc: 0.125102 0.042569 142.495339;
-  --ac: 0.160855 0.032956 85.237709;
-  --nc: 0.83825 0 0;
-  --inc: 0.137755 0.025897 224.112156;
-  --suc: 0.128483 0.031957 154.691323;
-  --wac: 0.16212 0.034072 75.87059;
-  --erc: 0.907864 0.043991 27.259231;
+  color-scheme: dark;
+  --in: 0.7206 0.191 231.6;
+  --su: 64.8% 0.150 160;
+  --wa: 0.8471 0.199 83.87;
+  --er: 0.7176 0.221 22.18;
+  --pc: 0.13138 0.0392 275.75;
+  --sc: 0.1496 0.052 342.55;
+  --ac: 0.14902 0.0334 183.61;
+  --inc: 0 0 0;
+  --suc: 0 0 0;
+  --wac: 0 0 0;
+  --erc: 0 0 0;
   --rounded-box: 1rem;
   --rounded-btn: 0.5rem;
   --rounded-badge: 1.9rem;
@@ -518,112 +518,15 @@ html {
   --border-btn: 1px;
   --tab-border: 1px;
   --tab-radius: 0.5rem;
-  --s: 0.625511 0.212845 142.495339;
-  --a: 0.804274 0.164782 85.237709;
-  --n: 0.191251 0 0;
-  --b1: 0.987641 0.009475 320.546542;
-  --in: 0.688776 0.129484 224.112156;
-  --su: 0.642417 0.159784 154.691323;
-  --wa: 0.810599 0.170361 75.87059;
-  --er: 0.539319 0.219955 27.259231;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p: 0.76859 0.164659 70.08039;
-    --b2: 0.278049 0.018164 70.265991;
-    --b3: 0.257121 0.016797 70.265991;
-    --bc: 0.859795 0.003906 70.265991;
-    --pc: 0.153718 0.032932 70.08039;
-    --sc: 0.172112 0.034623 91.935651;
-    --ac: 0.16007 0.036412 151.711031;
-    --nc: 0.863361 0.005548 32.816343;
-    --inc: 0.165517 0.020255 230.317893;
-    --suc: 0.169863 0.041468 128.849744;
-    --wac: 0.136749 0.041218 42.060317;
-    --erc: 0.129006 0.043081 16.4393;
-    --rounded-box: 1rem;
-    --rounded-btn: 0.5rem;
-    --rounded-badge: 1.9rem;
-    --animation-btn: 0.25s;
-    --animation-input: .2s;
-    --btn-focus-scale: 0.95;
-    --border-btn: 1px;
-    --tab-border: 1px;
-    --tab-radius: 0.5rem;
-    --s: 0.860559 0.173115 91.935651;
-    --a: 0.800349 0.18206 151.711031;
-    --n: 0.316803 0.027741 32.816343;
-    --b1: 0.298977 0.019532 70.265991;
-    --in: 0.827586 0.101277 230.317893;
-    --su: 0.849315 0.20734 128.849744;
-    --wa: 0.683743 0.206091 42.060317;
-    --er: 0.645032 0.215403 16.4393;
-  }
-}
-
-[data-theme=light] {
-  --p: 0.811 0.137923 201.257826;
-  --b2: 0.918506 0.008811 320.546542;
-  --b3: 0.849372 0.008148 320.546542;
-  --bc: 0.197528 0.001895 320.546542;
-  --pc: 0.1622 0.027585 201.257826;
-  --sc: 0.125102 0.042569 142.495339;
-  --ac: 0.160855 0.032956 85.237709;
-  --nc: 0.83825 0 0;
-  --inc: 0.137755 0.025897 224.112156;
-  --suc: 0.128483 0.031957 154.691323;
-  --wac: 0.16212 0.034072 75.87059;
-  --erc: 0.907864 0.043991 27.259231;
-  --rounded-box: 1rem;
-  --rounded-btn: 0.5rem;
-  --rounded-badge: 1.9rem;
-  --animation-btn: 0.25s;
-  --animation-input: .2s;
-  --btn-focus-scale: 0.95;
-  --border-btn: 1px;
-  --tab-border: 1px;
-  --tab-radius: 0.5rem;
-  --s: 0.625511 0.212845 142.495339;
-  --a: 0.804274 0.164782 85.237709;
-  --n: 0.191251 0 0;
-  --b1: 0.987641 0.009475 320.546542;
-  --in: 0.688776 0.129484 224.112156;
-  --su: 0.642417 0.159784 154.691323;
-  --wa: 0.810599 0.170361 75.87059;
-  --er: 0.539319 0.219955 27.259231;
-}
-
-[data-theme=dark] {
-  --p: 0.76859 0.164659 70.08039;
-  --b2: 0.278049 0.018164 70.265991;
-  --b3: 0.257121 0.016797 70.265991;
-  --bc: 0.859795 0.003906 70.265991;
-  --pc: 0.153718 0.032932 70.08039;
-  --sc: 0.172112 0.034623 91.935651;
-  --ac: 0.16007 0.036412 151.711031;
-  --nc: 0.863361 0.005548 32.816343;
-  --inc: 0.165517 0.020255 230.317893;
-  --suc: 0.169863 0.041468 128.849744;
-  --wac: 0.136749 0.041218 42.060317;
-  --erc: 0.129006 0.043081 16.4393;
-  --rounded-box: 1rem;
-  --rounded-btn: 0.5rem;
-  --rounded-badge: 1.9rem;
-  --animation-btn: 0.25s;
-  --animation-input: .2s;
-  --btn-focus-scale: 0.95;
-  --border-btn: 1px;
-  --tab-border: 1px;
-  --tab-radius: 0.5rem;
-  --s: 0.860559 0.173115 91.935651;
-  --a: 0.800349 0.18206 151.711031;
-  --n: 0.316803 0.027741 32.816343;
-  --b1: 0.298977 0.019532 70.265991;
-  --in: 0.827586 0.101277 230.317893;
-  --su: 0.849315 0.20734 128.849744;
-  --wa: 0.683743 0.206091 42.060317;
-  --er: 0.645032 0.215403 16.4393;
+  --p: 0.6569 0.196 275.75;
+  --s: 0.748 0.26 342.55;
+  --a: 0.7451 0.167 183.61;
+  --n: 0.313815 0.021108 254.139175;
+  --nc: 0.746477 0.0216 264.435964;
+  --b1: 0.253267 0.015896 252.417568;
+  --b2: 0.232607 0.013807 253.100675;
+  --b3: 0.211484 0.01165 254.087939;
+  --bc: 0.746477 0.0216 264.435964;
 }
 
 *, ::before, ::after {
@@ -932,6 +835,13 @@ html {
     border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
   }
 
+  .btn-outline.btn-accent:hover {
+    --tw-text-opacity: 1;
+    color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+    background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+    border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+  }
+
   .btn-disabled:hover,
     .btn[disabled]:hover,
     .btn:disabled:hover {
@@ -1067,6 +977,10 @@ html {
   .btn-primary {
     --btn-color: var(--fallback-p);
   }
+
+  .btn-accent {
+    --btn-color: var(--fallback-a);
+  }
 }
 
 .btn:focus-visible {
@@ -1085,6 +999,16 @@ html {
   .btn-primary {
     --btn-color: var(--p);
   }
+
+  .btn-accent {
+    --btn-color: var(--a);
+  }
+}
+
+.btn-accent {
+  --tw-text-opacity: 1;
+  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+  outline-color: var(--fallback-a,oklch(var(--a)/1));
 }
 
 .btn.glass {
@@ -1109,6 +1033,18 @@ html {
   color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
   background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
   border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
+}
+
+.btn-outline.btn-accent {
+  --tw-text-opacity: 1;
+  color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
+}
+
+.btn-outline.btn-accent.btn-active {
+  --tw-text-opacity: 1;
+  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+  background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+  border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
 }
 
 .btn.btn-disabled,
@@ -1542,6 +1478,10 @@ html {
   margin-top: 2rem;
 }
 
+.flex {
+  display: flex;
+}
+
 .h-full {
   height: 100%;
 }
@@ -1558,16 +1498,24 @@ html {
   width: 100%;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .items-center {
   align-items: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 .justify-end {
   justify-content: flex-end;
 }
 
-.overflow-x-auto {
-  overflow-x: auto;
+.gap-4 {
+  gap: 1rem;
 }
 
 .bg-base-100 {
