@@ -37,7 +37,7 @@ fn create_and_save_graph(
         .iter()
         .map(|(name, count)| {
             (
-                format!("{}:{}", name.as_str(), count.to_string()),
+                format!("{}:{}", name.as_str(), count),
                 *count as f64,
             )
         })
@@ -156,7 +156,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
     }
     response
         .edit(&ctx.http, |m| {
-            m.content(format!("Done collecting messages starting making pie"))
+            m.content("Done collecting messages starting making pie".to_string())
         })
         .await?;
     let mut message_counts: HashMap<String, i32> = HashMap::new();
@@ -190,7 +190,7 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
 
     // Send the image to the Discord channel
     let path = Path::new("output.png");
-    let mut file = File::open(&path).expect("Unable to open the file");
+    let mut file = File::open(path).expect("Unable to open the file");
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer)
         .expect("Unable to read the file");

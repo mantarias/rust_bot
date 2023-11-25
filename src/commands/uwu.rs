@@ -76,19 +76,19 @@ fn uwunize(text: &str) -> String {
     ];
 
     let mut uwu_text = String::new();
-    let mut chars = text.chars().peekable();
+    let chars = text.chars().peekable();
 
-    while let Some(c) = chars.next() {
+    for c in chars {
         match c {
             '.' | ',' => {
                 // Randomly select an emoticon.
                 let emoticon = emoticons.choose(&mut rand::thread_rng()).unwrap();
                 uwu_text.push_str(emoticon);
             }
-            'r' => uwu_text.push_str("w"),
-            'l' => uwu_text.push_str("w"),
-            'R' => uwu_text.push_str("W"),
-            'L' => uwu_text.push_str("W"),
+            'r' => uwu_text.push('w'),
+            'l' => uwu_text.push('w'),
+            'R' => uwu_text.push('W'),
+            'L' => uwu_text.push('W'),
             _ => uwu_text.push(c),
         }
     }

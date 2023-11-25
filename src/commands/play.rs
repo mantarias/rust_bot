@@ -46,7 +46,7 @@ async fn play(ctx: &Context, msg: &Message) -> CommandResult {
         }
     };
 
-    let manager = match songbird::get(&ctx).await {
+    let manager = match songbird::get(ctx).await {
         Some(manager) => {
             println!("Songbird manager obtained");
             manager

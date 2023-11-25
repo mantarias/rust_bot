@@ -12,7 +12,7 @@ async fn c(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
     let mut i = 1;
 
     while !args.is_empty() {
-        if let Some(arg) = args.single_quoted::<String>().ok() {
+        if let Ok(arg) = args.single_quoted::<String>() {
             response += &format!("arg{} = {}\n", i, arg);
             i += 1;
         }
