@@ -5,6 +5,7 @@ use tokio_postgres::Client;
 
 #[derive(Serialize)]
 struct CommandData {
+    index: i32,
     command: String,
     response: String,
 }
@@ -21,10 +22,10 @@ pub async fn get_commands(client: Extension<Arc<Client>>) -> Json<ResponseComman
         .expect("Failed to run query");
 
     let mut commands = Vec::new();
-    for row in rows {
-        let command = row.get(0);
-        let response = row.get(1);
-        commands.push(CommandData { command, response });
+    for (index, row) in rows.into_iter().enumerate() {
+        let command = row.get(1);
+        let response = row.get(2);
+        commands.push(CommandData { index: index as i32, command, response });
     }
 
     Json(ResponseCommandData { commands })
