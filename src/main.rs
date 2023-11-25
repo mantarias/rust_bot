@@ -15,8 +15,12 @@ mod commands;
 mod web;
 
 use commands::GENERAL_GROUP;
+use tokio_postgres::Client;
 use tokio_postgres::NoTls;
-
+struct MyClient(tokio_postgres::Client);
+impl serenity::prelude::TypeMapKey for MyClient {
+    type Value = Client;
+}
 struct Handler;
 
 #[async_trait]
@@ -25,13 +29,18 @@ impl EventHandler for Handler {}
 #[tokio::main]
 async fn main() {
     // Connect to the database.
-    let (client, connection) = tokio_postgres::connect(
+    let (db_client, connection) = tokio_postgres::connect(
         "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
         NoTls,
     )
     .await
     .unwrap();
-
+    let (db_client2, connection) = tokio_postgres::connect(
+        "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
+        NoTls,
+    )
+    .await
+    .unwrap();
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.
     tokio::spawn(async move {
@@ -42,7 +51,7 @@ async fn main() {
 
     // Start the web server in a separate async task
     tokio::spawn(async {
-        web::run_server(client).await;
+        web::run_server(db_client).await;
     });
 
     // Configure the client with the bot's prefix and commands
@@ -55,13 +64,14 @@ async fn main() {
     let token = env::var("DISCORD_BOT_TOKEN").expect("Expected a token in the environment");
     let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
 
-    let mut client = Client::builder(token, intents)
+    let mut client = serenity::Client::builder(token, intents)
         .event_handler(Handler)
         .register_songbird()
         .framework(framework) // framework is now used here after all configurations
         .await
         .expect("Error creating client");
-
+    let data =  &mut client.data.write().await;
+    data.insert::<MyClient>(db_client2);
     if let Ok(contents) = fs::read_to_string("update.txt") {
         let parts: Vec<&str> = contents.split_whitespace().collect();
         if parts.len() == 2 {
