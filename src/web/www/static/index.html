@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Command Creator</title>
     <link href="static/output.css" rel="stylesheet">
-    <link href="static/style.css" rel="stylesheet">
 </head>
 <body class="bg-base-100 text-primary">
 <div class="container mx-auto p-4">
     <h1 class="text-primary text-4xl mb-4 font-bold">Custom Command Creator</h1>
 
-    <div class="mt-6">
+    <div class="mt-6" id="container">
         <h2 class="text-xl font-semibold mb-2 text-accent">Your Commands</h2>
 
         <!-- Dynamic list of commands will be displayed here -->
@@ -21,8 +20,8 @@
                 <p>Create a new command</p>
                 <div class="card-actions justify-end">
                     <!-- Open the modal using ID.showModal() method -->
-                    <button class="btn btn-primary" onclick="my_modal_1.showModal()">Create New</button>
-                    <dialog id="my_modal_1" class="modal">
+                    <button class="btn btn-primary" onclick="createModal.showModal()">Create New</button>
+                    <dialog id="createModal" class="modal">
                         <div class="modal-box">
                             <h3 class="font-bold text-lg text-primary">Create New Command</h3>
                             <input type="text" placeholder="Type here" class="input input-bordered input-accent text-center mb-4 mt-4 w-10/12" value="">
@@ -37,13 +36,18 @@
                 </div>
             </div>
         </div>
-        <!-- Import the command.html fragment here -->
 
+        <div class="commandDisplay"> </div>
+
+
+        <div class="overflow-x-auto">
+        </div>
+        </div>
 
         <div class="overflow-x-auto">
         </div>
     </div>
 </div>
-<script src="static/javascript.js"></script> <!-- Update with the correct path to your JavaScript file -->
+<script src="static/manageCommands.js"></script> <!-- Update with the correct path to your JavaScript file -->
 </body>
 </html>

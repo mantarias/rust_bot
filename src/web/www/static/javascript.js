@@ -17,23 +17,4 @@ form.addEventListener("submit", (e) => {
             console.error('Error:', error);
         });
 })
-document.addEventListener("DOMContentLoaded",()=>{
-    getData();
-});
-function getData(){
-    fetch('/get-commands', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json', // Ensure correct content type for JSON
-        },
-    }).then(response => {console.log(response); return response.json()}) // Parse JSON response
-
-        .then(data => {
-            console.log('Success:', data.message);
-            // Handle the data from the server
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
 

@@ -24,6 +24,9 @@ struct ResponseData {
 }
 
 
+
+
+
 #[derive(Deserialize)]
 struct QueryParams {
     page: Option<String>,
@@ -43,7 +46,9 @@ pub async fn run_server(client: Client) {
 
         .route("/", get(page_handler))
         .route("/post", post(post_handler))
+        .route("/get-commands", get(get_commands))
         .route("/static/*path", get(static_handler))
+        .route("/node_modules/*path", get(static_handler))
         .layer(Extension(Arc::new(client)));
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
@@ -116,4 +121,34 @@ async fn serve_file(file_path: PathBuf) -> Result<Response<Body>, StatusCode> {
         Ok(contents) => Ok(Response::new(Body::from(contents))),
         Err(_) => Err(StatusCode::NOT_FOUND),
     }
+}
+
+
+#[derive(Serialize)]
+struct CommandData {
+    command: String,
+    response: String,
+}
+#[derive(Serialize)]
+struct ResponseCommandData {
+    commands: Vec<CommandData>,
+}
+async fn get_commands(client: Extension<Arc<Client>>) -> Json<ResponseCommandData> {
+    let rows = client
+        .query("SELECT * FROM commands", &[])
+        .await.expect("Failed to run query");
+
+    let mut commands = Vec::new();
+    for row in rows {
+        let command = row.get(0);
+        let response = row.get(1);
+        commands.push(CommandData {
+            command,
+            response,
+        });
+    }
+
+    Json(ResponseCommandData {
+        commands,
+    })
 }
