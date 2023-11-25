@@ -9,13 +9,13 @@ function getData(){
             'Content-Type': 'application/json',
         },
     }).then(response => {
-            console.log(response.headers.get('Content-Type'));
-            console.log(response.headers.get('Date'));
-            console.log(response.status);
-            console.log(response.statusText);
-            console.log(response.type);
-            console.log(response.url);
-            return response.json()})
+        console.log(response.headers.get('Content-Type'));
+        console.log(response.headers.get('Date'));
+        console.log(response.status);
+        console.log(response.statusText);
+        console.log(response.type);
+        console.log(response.url);
+        return response.json()})
         .then(data => {
             console.log(data);
             if (Array.isArray(data)) {
@@ -30,16 +30,22 @@ function getData(){
 }
 
 function createCommands(data){
-    data.forEach((el)=>{
+    data.forEach((el, index)=>{
         let card = document.createElement("div");
         card.classList.add("card", "w-96", "bg-neutral", "text-neutral-content", "mb-4", "mt-4");
+        card.style.opacity = 0;
+        card.style.transition = 'opacity 1s ease';
+
+        setTimeout(() => {
+            card.style.opacity = 1;
+        }, index * 100);
 
         let cardBody = document.createElement("div");
         cardBody.classList.add("card-body", "items-center", "text-center");
 
         let cardTitle = document.createElement("h2");
         cardTitle.classList.add("card-title");
-        cardTitle.textContent = el.command;
+        cardTitle.textContent = "-c " + el.command;
 
         let cardText = document.createElement("p");
         cardText.textContent = el.response;
