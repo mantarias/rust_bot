@@ -70,10 +70,14 @@ async fn main() {
         .framework(framework) // framework is now used here after all configurations
         .await
         .expect("Error creating client");
+
+    
     {
         let data =  &mut client.data.write().await;
         data.insert::<MyClient>(db_client2);
     }
+
+
     if let Ok(contents) = fs::read_to_string("update.txt") {
         let parts: Vec<&str> = contents.split_whitespace().collect();
         if parts.len() == 2 {

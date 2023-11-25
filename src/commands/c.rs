@@ -17,26 +17,6 @@ async fn c(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
     };
     let data = ctx.data.read().await;
     let client = data.get::<MyClient>().unwrap();
-    // Connect to the database.
-    // let (client, connection) = match tokio_postgres::connect(
-    //     "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
-    //     NoTls,
-    // )
-    //     .await {
-    //         Ok((client, connection)) => (client, connection),
-    //         Err(err) => {
-    //             eprintln!("Connection error: {}", err);
-    //             return Err("Unable to connect to the database.".into())
-    //         }
-    //     };
-
-    // // The connection object performs the actual communication with the database,
-    // // so spawn it off to run on its own.
-    // tokio::spawn(async move {
-    //     if let Err(e) = connection.await {
-    //         eprintln!("connection error: {}", e);
-    //     }
-    // });
 
     // Query the "commands" table with the argument and gather the results.
     let rows = match client.query("SELECT * FROM commands WHERE command_name = $1", &[&arg]).await {
