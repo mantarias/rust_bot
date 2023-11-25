@@ -95,7 +95,7 @@ modalSaveBtn.addEventListener("click", () => {
     if (modalSaveBtn.textContent === "Create" && modalSaveBtn.dataset.id === "none") {
         createCommand();
     } else {
-        updateCommand(id);
+        updateCommand();
     }
 });
 
@@ -110,6 +110,31 @@ function createCommand() {
     }
     fetch('/create-command', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }).then(response => { console.log(response); return response.json() })
+        .then(data => {
+            console.log('Success:', data);
+            location.reload();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+function updateCommand() {
+    console.log("trying to create command");
+    let field1 = commandInput.value;
+    let field2 = responseTextArea.value;
+    let index = modalSaveBtn.dataset.id;
+    let data = {
+        field1,
+        field2,
+        index
+    }
+    fetch('/update-command', {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
