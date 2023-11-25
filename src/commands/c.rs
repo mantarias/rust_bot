@@ -1,10 +1,8 @@
-use rand::Rng;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,
     prelude::*,
 };
-use std::time::Duration;
 use serenity::framework::standard::Args;
 use tokio_postgres::NoTls;
 
