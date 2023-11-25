@@ -15,7 +15,7 @@ pub struct ResponseData {
     message: String,
 }
 
-pub fn update_command(
+pub async fn update_command(
     client: Extension<Arc<Client>>,
     Json(data): Json<PostData>,
 ) -> Json<ResponseData> {
