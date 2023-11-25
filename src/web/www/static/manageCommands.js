@@ -1,11 +1,12 @@
 let container = document.querySelector(".commandDisplay");
 let commandInput = document.querySelector("#commandInput");
+let modal = document.querySelector("#createModal")
 let responseTextArea = document.querySelector("#response-textarea");
-
-document.addEventListener("DOMContentLoaded", ()=>{
+let modalSaveBtn = document.querySelector("#modal-save-btn");
+document.addEventListener("DOMContentLoaded", () => {
     getData();
 });
-function getData(){
+function getData() {
     fetch('/get-commands', {
         method: 'GET',
         headers: {
@@ -18,7 +19,8 @@ function getData(){
         console.log(response.statusText);
         console.log(response.type);
         console.log(response.url);
-        return response.json()})
+        return response.json()
+    })
         .then(data => {
             console.log(data);
             if (Array.isArray(data)) {
@@ -32,8 +34,8 @@ function getData(){
         });
 }
 
-function createCommands(data){
-    data.forEach((el, index)=>{
+function createCommands(data) {
+    data.forEach((el, index) => {
         let card = document.createElement("div");
         card.classList.add("card", "w-96", "bg-neutral", "text-neutral-content", "mb-4", "mt-4");
         card.style.opacity = 0;
@@ -58,14 +60,16 @@ function createCommands(data){
 
         let cardButton = document.createElement("button");
         cardButton.classList.add("btn", "btn-primary");
-        cardButton.addEventListener("click",()=>{
-            document.querySelector("#createModal").showModal();
+        cardButton.addEventListener("click", () => {
+            modalSaveBtn.dataset.id = index + 1;
             commandInput.value = el.command;
             responseTextArea.value = el.response;
+            modal.showModal();
+
         })
         // cardButton.setAttribute("onclick", "my_modal_2.showModal()");
         cardButton.textContent = "Create New";
-        
+
         cardActions.appendChild(cardButton);
 
         cardBody.appendChild(cardTitle);
@@ -76,4 +80,46 @@ function createCommands(data){
 
         container.appendChild(card);
     })
+}
+
+document.querySelector("#createNewCommand").addEventListener("click", () => {
+    commandInput.value = "";
+    responseTextArea.value = "";
+    modalSaveBtn.dataset.id = "none";
+    modal.showModal();
+    modalSaveBtn.textContent = "Create";
+});
+
+
+modalSaveBtn.addEventListener("click", () => {
+    if (modalSaveBtn.textContent === "Create" && modalSaveBtn.dataset.id === "none") {
+        createCommand();
+    } else {
+        updateCommand(id);
+    }
+});
+
+
+function createCommand() {
+    console.log("trying to create command");
+    let field1 = commandInput.value;
+    let field2 = responseTextArea.value;
+    let data = {
+        field1,
+        field2,
+    }
+    fetch('/create-command', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }).then(response => { console.log(response); return response.json() })
+        .then(data => {
+            console.log('Success:', data);
+            location.reload();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }

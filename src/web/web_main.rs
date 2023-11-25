@@ -1,12 +1,15 @@
 use crate::web::get_commands::get_commands;
 use crate::web::page_handler::page_handler;
 use crate::web::post_handeler::post_handler;
+use crate::web::update_command::update_command;
+
 use axum::{
     body::Body,
     extract::{Extension, Path},
     http::{Response, StatusCode},
     routing::get,
     routing::post,
+    routing::put,
     Router,
 };
 use std::net::SocketAddr;
@@ -27,9 +30,10 @@ pub async fn run_server(client: Client) {
         .unwrap();
     let app = Router::new()
         .route("/", get(page_handler))
-        .route("/post", post(post_handler))
+        .route("/create-command", post(post_handler))
         .route("/get-commands", get(get_commands))
         .route("/static/*path", get(static_handler))
+        .route("/update-command", put(update_command))
         .layer(Extension(Arc::new(client)));
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     axum::Server::bind(&addr)

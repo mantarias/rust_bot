@@ -3,9 +3,9 @@ use serde_derive::{Deserialize, Serialize};
 use std::sync::Arc;
 use tokio_postgres::Client;
 
-
 #[derive(Deserialize)]
 pub struct PostData {
+    index: i32,
     field1: String,
     field2: String,
 }
@@ -15,11 +15,14 @@ pub struct ResponseData {
     message: String,
 }
 
-pub async fn post_handler(
+pub fn update_command(
     client: Extension<Arc<Client>>,
     Json(data): Json<PostData>,
 ) -> Json<ResponseData> {
-    println!("Received field1: {} and {}", data.field1, data.field2);
+    println!(
+        "Received field1: {} and {} with index {}",
+        data.field1, data.field2, data.index
+    );
 
     let response = ResponseData {
         message: format!("Received field1: {} and {}", data.field1, data.field2),
