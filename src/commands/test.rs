@@ -1,12 +1,9 @@
 //! # test
 use serenity::model::id::MessageId;
 use serenity::{
-    prelude::*,
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
+    prelude::*,
 };
 #[command]
 async fn test(ctx: &Context, msg: &Message) -> CommandResult {

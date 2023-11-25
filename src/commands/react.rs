@@ -1,9 +1,6 @@
 //! echoes back the message sent to it
 use serenity::{
-    framework::standard::{
-        macros::command,
-        CommandResult,
-    },
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
     prelude::*,
 };
@@ -18,5 +15,3 @@ async fn react(ctx: &Context, msg: &Message) -> CommandResult {
     }
     Ok(())
 }
-
-

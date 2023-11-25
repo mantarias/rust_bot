@@ -1,11 +1,8 @@
 //! Returns the profile pictures of the pinged users.
 use serenity::{
-    prelude::*,
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
+    prelude::*,
 };
 
 #[command]
@@ -18,12 +15,22 @@ async fn pfp(ctx: &Context, msg: &Message) -> CommandResult {
                 // Send the profile picture URL as a reply.
                 msg.channel_id.say(&ctx.http, &avatar_url).await?;
             } else {
-                msg.channel_id.say(&ctx.http, format!("{} does not have a profile picture.", user.name)).await?;
+                msg.channel_id
+                    .say(
+                        &ctx.http,
+                        format!("{} does not have a profile picture.", user.name),
+                    )
+                    .await?;
             }
         }
     } else {
         // Providing usage and example if no user was mentioned
-        msg.channel_id.say(&ctx.http, "Please mention a user to get their profile picture. For example: '!pfp @username'").await?;
+        msg.channel_id
+            .say(
+                &ctx.http,
+                "Please mention a user to get their profile picture. For example: '!pfp @username'",
+            )
+            .await?;
     }
 
     Ok(())

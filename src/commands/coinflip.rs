@@ -1,15 +1,12 @@
 //! Command for flipping a coin.
 
-use std::time::Duration;
 use rand::Rng;
 use serenity::{
-    framework::standard::{
-        macros::command,
-        CommandResult,
-    },
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
     prelude::*,
 };
+use std::time::Duration;
 
 pub enum CoinflipResult {
     Heads,
@@ -17,7 +14,6 @@ pub enum CoinflipResult {
 }
 
 impl CoinflipResult {
-
     fn as_str(&self) -> &str {
         match self {
             CoinflipResult::Heads => "Heads",
@@ -29,9 +25,7 @@ impl CoinflipResult {
 #[command]
 async fn coinflip(ctx: &Context, msg: &Message) -> CommandResult {
     let animation_frames = ["Coin is flipping...", "Still flipping..."];
-    let mut animation_msg = msg.channel_id
-        .say(&ctx.http, animation_frames[0])
-        .await?;
+    let mut animation_msg = msg.channel_id.say(&ctx.http, animation_frames[0]).await?;
 
     for &frame in animation_frames.iter().cycle().take(6) {
         tokio::time::sleep(Duration::from_secs(1)).await;
@@ -46,7 +40,11 @@ async fn coinflip(ctx: &Context, msg: &Message) -> CommandResult {
 
     let response = result.as_str();
 
-    animation_msg.edit(&ctx.http, |m| m.content(format!("Coinflip result: {}", response))).await?;
+    animation_msg
+        .edit(&ctx.http, |m| {
+            m.content(format!("Coinflip result: {}", response))
+        })
+        .await?;
 
     Ok(())
 }

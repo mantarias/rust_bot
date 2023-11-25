@@ -1,27 +1,34 @@
 //! creates a poll with reactions
-use serenity::{
-    prelude::*,
-    model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
-};
 use serenity::model::prelude::ReactionType;
+use serenity::{
+    framework::standard::{macros::command, CommandResult},
+    model::channel::Message,
+    prelude::*,
+};
 
 #[command]
 async fn poll(ctx: &Context, msg: &Message) -> CommandResult {
     // Split the message content into two parts: the command and the rest.
     let split_content: Vec<&str> = msg.content.splitn(2, ' ').collect();
     if split_content.len() != 2 {
-        msg.channel_id.say(&ctx.http, "Please provide a question and at least one option for the poll.").await?;
+        msg.channel_id
+            .say(
+                &ctx.http,
+                "Please provide a question and at least one option for the poll.",
+            )
+            .await?;
         return Ok(());
     }
 
     // Further split the second part into the question and options, using '?' as a delimiter.
     let question_and_options: Vec<&str> = split_content[1].splitn(2, '?').collect();
     if question_and_options.len() != 2 {
-        msg.channel_id.say(&ctx.http, "Please provide a question followed by a '?' and then the options.").await?;
+        msg.channel_id
+            .say(
+                &ctx.http,
+                "Please provide a question followed by a '?' and then the options.",
+            )
+            .await?;
         return Ok(());
     }
 
@@ -30,7 +37,12 @@ async fn poll(ctx: &Context, msg: &Message) -> CommandResult {
 
     // Check if at least one option was provided.
     if options.is_empty() {
-        msg.channel_id.say(&ctx.http, "Please provide at least one option for the poll.").await?;
+        msg.channel_id
+            .say(
+                &ctx.http,
+                "Please provide at least one option for the poll.",
+            )
+            .await?;
         return Ok(());
     }
 
@@ -52,7 +64,9 @@ async fn poll(ctx: &Context, msg: &Message) -> CommandResult {
 
     // Add reactions to the poll message.
     for i in 0..emojis.len().min(options.len()) {
-        poll_msg.react(&ctx.http, ReactionType::Unicode(emojis[i].to_string())).await?;
+        poll_msg
+            .react(&ctx.http, ReactionType::Unicode(emojis[i].to_string()))
+            .await?;
     }
 
     Ok(())

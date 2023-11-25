@@ -1,15 +1,10 @@
 //! plays a song from a YouTube URL
 use serenity::{
-    prelude::*,
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
+    prelude::*,
 };
-use songbird::{
-    input::ytdl,
-};
+use songbird::input::ytdl;
 
 #[command]
 async fn play(ctx: &Context, msg: &Message) -> CommandResult {
@@ -19,10 +14,15 @@ async fn play(ctx: &Context, msg: &Message) -> CommandResult {
         Some(guild) => {
             println!("Guild found");
             guild
-        },
+        }
         None => {
             println!("Play command is not in a server with voice channels.");
-            msg.channel_id.say(&ctx.http, "This command can only be used in a server with voice channels.").await?;
+            msg.channel_id
+                .say(
+                    &ctx.http,
+                    "This command can only be used in a server with voice channels.",
+                )
+                .await?;
             return Ok(());
         }
     };
@@ -33,10 +33,15 @@ async fn play(ctx: &Context, msg: &Message) -> CommandResult {
         Some(state) => {
             println!("User's voice state found");
             state.clone()
-        },
+        }
         None => {
             println!("User is not in a voice channel.");
-            msg.channel_id.say(&ctx.http, "You must be in a voice channel to use this command.").await?;
+            msg.channel_id
+                .say(
+                    &ctx.http,
+                    "You must be in a voice channel to use this command.",
+                )
+                .await?;
             return Ok(());
         }
     };
@@ -45,18 +50,25 @@ async fn play(ctx: &Context, msg: &Message) -> CommandResult {
         Some(manager) => {
             println!("Songbird manager obtained");
             manager
-        },
+        }
         None => {
             println!("Failed to obtain Songbird manager");
             return Ok(());
         }
     };
 
-    let (handler_lock, success) = manager.join(guild.id, voice_state.channel_id.unwrap()).await;
+    let (handler_lock, success) = manager
+        .join(guild.id, voice_state.channel_id.unwrap())
+        .await;
 
     if let Err(e) = success {
         println!("Error joining the voice channel: {:?}", e);
-        msg.channel_id.say(&ctx.http, format!("Error joining the voice channel: {:?}", e)).await?;
+        msg.channel_id
+            .say(
+                &ctx.http,
+                format!("Error joining the voice channel: {:?}", e),
+            )
+            .await?;
         return Ok(());
     }
 
@@ -72,10 +84,12 @@ async fn play(ctx: &Context, msg: &Message) -> CommandResult {
             println!("YouTube source obtained");
             let _track_handle = handler.play_only_source(source);
             println!("Track is now playing");
-        },
+        }
         Err(e) => {
             println!("Error loading YTDL source: {:?}", e);
-            msg.channel_id.say(&ctx.http, format!("Error loading YTDL source: {:?}", e)).await?;
+            msg.channel_id
+                .say(&ctx.http, format!("Error loading YTDL source: {:?}", e))
+                .await?;
         }
     }
 

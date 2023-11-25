@@ -1,5 +1,5 @@
 //! # mod.rs
-//! 
+//!
 //! This file is used to load all the commands in the commands folder.
 //! The commands are:
 //! * echo - Echoes the input message back to the user
@@ -15,40 +15,30 @@
 //! * poll - Creates a poll
 //! * coinflip - Flips a coin
 
+pub mod c;
+pub mod coinflip;
 pub mod echo;
+pub mod pfp;
 pub mod ping;
+pub mod play;
+pub mod poll;
+mod react;
 pub mod stats;
 pub mod status;
 pub mod test;
 pub mod update;
 pub mod ustatus;
-pub mod pfp;
 pub mod uwu;
-pub mod play;
-pub mod poll;
-pub mod coinflip;
-pub mod c;
-mod react;
-
 
 use self::{
-    echo::*,
-    ping::*,
-    stats::*,
-    status::*,
-    test::*,
-    update::*,
-    ustatus::*,
-    pfp::*,
-    uwu::*,
-    play::*,
-    poll::*,
-    coinflip::*,
-    c::*
+    c::*, coinflip::*, echo::*, pfp::*, ping::*, play::*, poll::*, stats::*, status::*, test::*,
+    update::*, ustatus::*, uwu::*,
 };
 
 use serenity::framework::standard::macros::group;
 
 #[group]
-#[commands(ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip,c)] // Add other commands here
+#[commands(
+    ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip, c
+)] // Add other commands here
 struct General;

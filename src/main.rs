@@ -1,9 +1,8 @@
 //! This file is the main entry point for the bot. It sets up the bot and starts it.
 //! Will print out a message if updated by a user.
 use dotenv::dotenv;
-use std::env;
-use std::fmt::format;
 use songbird::SerenityInit;
+use std::env;
 
 use serenity::model::id::{ChannelId, MessageId};
 use serenity::{
@@ -15,8 +14,8 @@ use std::str::FromStr;
 mod commands;
 mod web;
 
-use tokio_postgres::{NoTls, Error};
 use commands::GENERAL_GROUP;
+use tokio_postgres::NoTls;
 
 struct Handler;
 
@@ -26,8 +25,12 @@ impl EventHandler for Handler {}
 #[tokio::main]
 async fn main() {
     // Connect to the database.
-    let (client, connection) =
-        tokio_postgres::connect("host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres", NoTls).await.unwrap();
+    let (client, connection) = tokio_postgres::connect(
+        "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
+        NoTls,
+    )
+    .await
+    .unwrap();
 
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.
@@ -36,7 +39,6 @@ async fn main() {
             eprintln!("connection error: {}", e);
         }
     });
-
 
     // Start the web server in a separate async task
     tokio::spawn(async {

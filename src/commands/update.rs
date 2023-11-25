@@ -1,15 +1,11 @@
 //! updates the bot from github
 use serenity::{
-    prelude::*,
+    framework::standard::{macros::command, CommandResult},
     model::channel::Message,
-    framework::standard::{
-        CommandResult,
-        macros::command,
-    },
+    prelude::*,
 };
-use std::process::Command;
 use std::io::Write;
-
+use std::process::Command;
 
 #[command]
 async fn update(ctx: &Context, msg: &Message) -> CommandResult {
@@ -19,7 +15,8 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
     let mut file = match std::fs::File::create("update.txt") {
         Ok(file) => file,
         Err(e) => {
-            msg.reply(ctx, &format!("Failed to create file: {}", e)).await?;
+            msg.reply(ctx, &format!("Failed to create file: {}", e))
+                .await?;
             return Ok(());
         }
     };
@@ -27,7 +24,8 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
     match file.write_all(save_data.as_bytes()) {
         Ok(_) => {}
         Err(e) => {
-            msg.reply(ctx, &format!("Failed to write file: {}", e)).await?;
+            msg.reply(ctx, &format!("Failed to write file: {}", e))
+                .await?;
             return Ok(());
         }
     }
@@ -45,13 +43,15 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
                 Ok(status) => println!("Exited with status: {}", status),
                 Err(e) => {
                     eprintln!("Failed to wait for command: {}", e);
-                    msg.reply(ctx, &format!("Failed to wait for command: {}", e)).await?;
+                    msg.reply(ctx, &format!("Failed to wait for command: {}", e))
+                        .await?;
                 }
             }
         }
         Err(e) => {
             eprintln!("Failed to execute command: {}", e);
-            msg.reply(ctx, &format!("Failed to execute command: {}", e)).await?;
+            msg.reply(ctx, &format!("Failed to execute command: {}", e))
+                .await?;
         }
     }
     msg.reply(ctx, "something went wrong, check the logs or try again")

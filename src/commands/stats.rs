@@ -22,7 +22,10 @@ fn create_and_save_graph(
     root_area.fill(&WHITE).unwrap();
     let title_style = TextStyle::from(("sans-serif", 30).into_font()).color(&(BLACK));
     root_area
-        .titled(&format!("Message Statistics for #{}", channel_name), title_style) // Integrating the channel name into the title
+        .titled(
+            &format!("Message Statistics for #{}", channel_name),
+            title_style,
+        ) // Integrating the channel name into the title
         .unwrap();
 
     let dims = root_area.dim_in_pixel();
@@ -110,8 +113,11 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
                 } else if let Ok(id) = arg.parse::<u64>() {
                     channel_id = ChannelId(id);
                 } else {
-                    msg.reply(ctx, "Invalid argument format, using current channel and default message count.")
-                        .await?;
+                    msg.reply(
+                        ctx,
+                        "Invalid argument format, using current channel and default message count.",
+                    )
+                    .await?;
                 }
             }
         }
@@ -141,7 +147,6 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
             })
             .await?;
         if messages.is_empty() {
-
             break;
         }
 
@@ -150,10 +155,10 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
         all_messages.extend(messages);
     }
     response
-    .edit(&ctx.http, |m| {
-        m.content(format!("Done collecting messages starting making pie"))
-    })
-    .await?;
+        .edit(&ctx.http, |m| {
+            m.content(format!("Done collecting messages starting making pie"))
+        })
+        .await?;
     let mut message_counts: HashMap<String, i32> = HashMap::new();
     for message in all_messages {
         *message_counts.entry(message.author.name).or_insert(0) += 1;
@@ -175,7 +180,12 @@ async fn stats(ctx: &Context, msg: &Message) -> CommandResult {
 
     // Create the graph synchronously
     // create_and_save_graph(&message_counts, "output.png").expect("Failed to create
-    let channel_name = channel_id.to_channel(&ctx.http).await?.guild().unwrap().name;
+    let channel_name = channel_id
+        .to_channel(&ctx.http)
+        .await?
+        .guild()
+        .unwrap()
+        .name;
     let _ = create_and_save_graph(&message_counts, "output.png", &channel_name);
 
     // Send the image to the Discord channel
