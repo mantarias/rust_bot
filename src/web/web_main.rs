@@ -25,7 +25,6 @@ pub async fn run_server(client: Client) {
         )
         .await
         .unwrap();
-
     let app = Router::new()
         .route("/", get(page_handler))
         .route("/post", post(post_handler))
@@ -33,7 +32,6 @@ pub async fn run_server(client: Client) {
         .route("/static/*path", get(static_handler))
         .layer(Extension(Arc::new(client)));
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await

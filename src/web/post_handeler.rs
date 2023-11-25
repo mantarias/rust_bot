@@ -32,16 +32,5 @@ pub async fn post_handler(
         .await
         .unwrap();
 
-    let rows = client
-        .query("SELECT * FROM hello", &[])
-        .await
-        .expect("Failed to run query");
-
-    // You can use this to print the value of 'column_name' in the first row
-    for row in rows {
-        let column_value: String = row.get("column_name");
-        println!("{}", column_value);
-    }
-
     Json(response)
 }

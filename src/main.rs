@@ -35,7 +35,7 @@ async fn main() {
     )
     .await
     .unwrap();
-    let (db_client2, connection) = tokio_postgres::connect(
+    let (db_client2, connection2) = tokio_postgres::connect(
         "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
         NoTls,
     )
@@ -48,9 +48,14 @@ async fn main() {
             eprintln!("connection error: {}", e);
         }
     });
-
+    tokio::spawn(async move {
+        if let Err(e) = connection2.await {
+            eprintln!("connection error: {}", e);
+        }
+    });
     // Start the web server in a separate async task
     tokio::spawn(async {
+
         web::run_server(db_client).await;
     });
 
@@ -71,12 +76,10 @@ async fn main() {
         .await
         .expect("Error creating client");
 
-    
     {
-        let data =  &mut client.data.write().await;
+        let data = &mut client.data.write().await;
         data.insert::<MyClient>(db_client2);
     }
-
 
     if let Ok(contents) = fs::read_to_string("update.txt") {
         let parts: Vec<&str> = contents.split_whitespace().collect();
