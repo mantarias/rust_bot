@@ -1,4 +1,7 @@
 let container = document.querySelector(".commandDisplay");
+let commandInput = document.querySelector("#commandInput");
+let responseTextArea = document.querySelector("#response-textarea");
+
 document.addEventListener("DOMContentLoaded", ()=>{
     getData();
 });
@@ -55,9 +58,14 @@ function createCommands(data){
 
         let cardButton = document.createElement("button");
         cardButton.classList.add("btn", "btn-primary");
-        cardButton.setAttribute("onclick", "my_modal_2.showModal()");
+        cardButton.addEventListener("click",()=>{
+            document.querySelector("#createModal").showModal();
+            commandInput.value = el.command;
+            responseTextArea.value = el.response;
+        })
+        // cardButton.setAttribute("onclick", "my_modal_2.showModal()");
         cardButton.textContent = "Create New";
-
+        
         cardActions.appendChild(cardButton);
 
         cardBody.appendChild(cardTitle);

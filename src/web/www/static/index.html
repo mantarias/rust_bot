@@ -24,29 +24,29 @@
                         <div class="card-actions justify-end">
                             <!-- Open the modal using ID.showModal() method -->
                             <button class="btn btn-accent" onclick="createModal.showModal()">Create New</button>
-                            <dialog id="createModal" class="modal">
-                                <div class="modal-box">
-                                    <h3 class="font-bold text-lg text-primary">Create New Command</h3>
-                                    <input type="text" placeholder="Type here"
-                                           class="input input-bordered input-accent text-center mb-4 mt-4 w-10/12"
-                                           value="">
-                                    <p class="text-secondary mt-8">Response</p>
-                                    <textarea id="my-textarea" rows="8"
-                                              class="textarea textarea-accent w-full h-full mb-4 mt-4"
-                                              placeholder="Help: for help commands please type -c help [option]"></textarea>
-                                    <button class="btn btn-primary">Save</button>
-                                </div>
-                                <form method="dialog" class="modal-backdrop">
-                                    <button>close</button>
-                                </form>
-                            </dialog>
+                          
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <dialog id="createModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg text-primary">Create New Command</h3>
+            <input type="text" placeholder="Type here" id="commandInput"
+                   class="input input-bordered input-accent text-center mb-4 mt-4 w-10/12"
+                   value="">
+            <p class="text-secondary mt-8">Response</p>
+            <textarea id="response-textarea" rows="8"
+                      class="textarea textarea-accent w-full h-full mb-4 mt-4"
+                      placeholder="Help: for help commands please type -c help [option]"></textarea>
+            <button class="btn btn-primary">Save</button>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
 
 <script src="static/manageCommands.js"></script>  <!-- Update with the correct path to your JavaScript file -->
 </body>
