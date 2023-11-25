@@ -15,23 +15,23 @@ pub struct ResponseData {
     message: String,
 }
 
-pub fn update_command(
+pub async fn update_command(
     client: Extension<Arc<Client>>,
     Json(data): Json<PostData>,
 ) -> Json<ResponseData> {
     println!(
-        "Received field1: {} and {} with index {}",
-        data.field1, data.field2, data.index
+        "Updating fields at index {} with field1: {} and field2: {}",
+        data.index, data.field1, data.field2,
     );
 
     let response = ResponseData {
-        message: format!("Received field1: {} and {}", data.field1, data.field2),
+        message: format!("Updated fields at index: {}", data.index),
     };
 
     client
         .execute(
-            "INSERT INTO commands (command_name, command_response) VALUES ($1, $2)",
-            &[&data.field1, &data.field2],
+            "UPDATE commands SET command_name = $1, command_response = $2 WHERE id = $3",
+            &[&data.field1, &data.field2, &data.index],
         )
         .await
         .unwrap();
