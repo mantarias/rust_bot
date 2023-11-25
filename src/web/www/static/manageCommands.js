@@ -38,7 +38,7 @@ function createCommands(data){
 
         setTimeout(() => {
             card.style.opacity = 1;
-        }, index * 100);
+        }, index * 10);
 
         let cardBody = document.createElement("div");
         cardBody.classList.add("card-body", "items-center", "text-center");
