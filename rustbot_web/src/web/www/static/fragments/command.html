@@ -1,0 +1,22 @@
+
+<div class="card w-96 bg-neutral text-neutral-content mb-4 mt-4">
+    <div class="card-body items-center text-center">
+        <h2 class="card-title">-c help</h2>
+        <p>Help: for help commands please type "-c help [option]"</p>
+        <div class="card-actions justify-end">
+            <button class="btn btn-primary" onclick="my_modal_2.showModal()">Create New</button>
+            <dialog id="my_modal_2" class="modal">
+                <div class="modal-box">
+                    <h3 class="font-bold text-lg text-primary">Create New Command</h3>
+                    <input type="text" placeholder="Type here" class="input input-bordered input-accent text-center mb-4 mt-4 w-10/12" value="help">
+                    <p class="text-secondary mt-8">Response</p>
+                    <textarea id="my-textarea2" rows="8" class="textarea textarea-accent w-full h-full mb-4 mt-4" placeholder="Help echo: echo repearts back to you what you give it.">Help: for help commands please type "-c help [option]"</textarea>
+                    <button class="btn btn-primary">Save</button>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+        </div>
+    </div>
+</div>

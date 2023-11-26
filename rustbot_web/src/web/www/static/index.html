@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Command Creator</title>
+    <link href="static/output.css" rel="stylesheet">
+</head>
+
+
+<body class="bg-base-100 text-primary">
+<div class="container mx-auto p-4">
+    <h1 class="text-primary text-4xl mb-4 font-bold">Custom Command Creator</h1>
+
+    <div class="mt-6" id="container">
+        <h2 class="text-xl font-semibold mb-2 text-accent">Your Commands</h2>
+            <div class="commandDisplay flex flex-wrap justify-start gap-4">
+
+                <!-- Dynamic list of commands will be displayed here -->
+                <div class="card w-96 bg-neutral text-neutral-content mb-4 mt-4">
+                    <div class="card-body items-center text-center">
+                        <h2 class="card-title">Create New</h2>
+                        <p>Create a new command</p>
+                        <div class="card-actions justify-end">
+                            <!-- Open the modal using ID.showModal() method -->
+                            <button class="btn btn-accent" id="createNewCommand">Create New</button>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dialog id="createModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg text-primary">Create New Command</h3>
+            <input type="text" placeholder="Type here" id="commandInput"
+                   class="input input-bordered input-accent text-center mb-4 mt-4 w-10/12"
+                   value="">
+            <p class="text-secondary mt-8">Response</p>
+            <textarea id="response-textarea" rows="8"
+                      class="textarea textarea-accent w-full h-full mb-4 mt-4"
+                      placeholder="Help: for help commands please type -c help [option]"></textarea>
+            <button id="modal-save-btn" data-id="none" class="btn btn-primary">Save</button>
+            
+            <label id="index">none</label>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+<script src="static/manageCommands.js"></script>  <!-- Update with the correct path to your JavaScript file -->
+</body>
+
+</html>

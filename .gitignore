@@ -1,4 +1,7 @@
-/target
+/target/
+/rustbot_web/src/web/www/node_modules/
+rustbot_discord/.env
+rustbot_web/.env
+rustbot_web/output.png
+Cargo.lock
 .env
-.env copy
-output.png
