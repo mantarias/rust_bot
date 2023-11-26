@@ -15,10 +15,7 @@ pub struct ResponseData {
     message: String,
 }
 
-pub async fn post_handler(
-    client: Extension<Arc<Client>>,
-    Json(data): Json<PostData>,
-) -> Json<ResponseData> {
+pub async fn post_handler(client: Extension<Arc<Client>>, Json(data): Json<PostData>, ) -> Json<ResponseData> {
     println!("Received field1: {} and {}", data.field1, data.field2);
 
     let response = ResponseData {

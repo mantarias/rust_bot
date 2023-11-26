@@ -1,6 +1,6 @@
 use crate::web::get_commands::get_commands;
 use crate::web::page_handler::page_handler;
-use crate::web::post_handeler::post_handler;
+use crate::web::post_handler::post_handler;
 use crate::web::update_command::update_command;
 
 use axum::{
