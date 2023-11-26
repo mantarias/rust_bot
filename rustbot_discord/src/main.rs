@@ -12,8 +12,6 @@ use std::fs;
 use std::str::FromStr;
 
 mod commands;
-mod web;
-
 use commands::GENERAL_GROUP;
 use tokio_postgres::Client;
 use tokio_postgres::NoTls;
@@ -29,12 +27,6 @@ impl EventHandler for Handler {}
 #[tokio::main]
 async fn main() {
     // Connect to the database.
-    let (db_client, connection) = tokio_postgres::connect(
-        "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
-        NoTls,
-    )
-    .await
-    .unwrap();
     let (db_client2, connection2) = tokio_postgres::connect(
         "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
         NoTls,
@@ -44,19 +36,9 @@ async fn main() {
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.
     tokio::spawn(async move {
-        if let Err(e) = connection.await {
-            eprintln!("connection error: {}", e);
-        }
-    });
-    tokio::spawn(async move {
         if let Err(e) = connection2.await {
             eprintln!("connection error: {}", e);
         }
-    });
-    // Start the web server in a separate async task
-    tokio::spawn(async {
-
-        web::run_server(db_client).await;
     });
 
     // Configure the client with the bot's prefix and commands

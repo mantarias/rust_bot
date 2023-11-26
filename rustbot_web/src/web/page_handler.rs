@@ -12,7 +12,7 @@ pub async fn page_handler(
     Query(params): Query<QueryParams>,
 ) -> Result<Html<String>, (StatusCode, String)> {
     let page = params.page.unwrap_or_else(|| "static/index".to_string());
-    let path = format!("{}{}", "src/web/www/", page);
+    let path = format!("{}{}", "rustbot_web/src/web/www/", page);
     let path = format!("{}{}", path, ".html");
     println!("{}", path);
 
