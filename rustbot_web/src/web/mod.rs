@@ -1,7 +1,5 @@
-mod get_commands;
-mod page_handler;
-mod post_handler;
-mod web_main;
-mod update_command;
+pub(crate) mod get_commands;
+pub(crate) mod page_handler;
+pub(crate) mod post_handler;
+pub(crate) mod update_command;
 
-pub use web_main::run_server;

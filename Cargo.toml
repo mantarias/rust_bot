@@ -3,3 +3,9 @@ members = [
     "rustbot_discord",
     "rustbot_web",
 ]
+resolver = "2"
+
+
+[profile.dev]
+incremental = true
+codegen-units = 16

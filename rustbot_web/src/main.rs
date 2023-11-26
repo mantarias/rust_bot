@@ -1,30 +1,32 @@
 //! This file is the main entry point for the bot. It sets up the bot and starts it.
 //! Will print out a message if updated by a user.
-use dotenv::dotenv;
-use songbird::SerenityInit;
-use std::env;
+use tokio::fs as tokio_fs;
 
-use serenity::model::id::{ChannelId, MessageId};
-use serenity::{
-    async_trait, framework::standard::StandardFramework, model::gateway::GatewayIntents, prelude::*,
+use crate::web::get_commands::get_commands;
+use crate::web::page_handler::page_handler;
+use crate::web::post_handler::post_handler;
+use crate::web::update_command::update_command;
+
+use axum::{
+    body::Body,
+    extract::{Extension, Path},
+    http::{Response, StatusCode},
+    routing::get,
+    routing::post,
+    routing::put,
+    Router,
 };
-use std::fs;
-use std::str::FromStr;
+use std::net::SocketAddr;
+use std::path::PathBuf;
+use std::sync::Arc;
 
-mod commands;
+
+
+
 mod web;
 
-use commands::GENERAL_GROUP;
-use tokio_postgres::Client;
 use tokio_postgres::NoTls;
-struct MyClient(tokio_postgres::Client);
-impl serenity::prelude::TypeMapKey for MyClient {
-    type Value = Client;
-}
-struct Handler;
 
-#[async_trait]
-impl EventHandler for Handler {}
 
 #[tokio::main]
 async fn main() {
@@ -35,12 +37,7 @@ async fn main() {
     )
     .await
     .unwrap();
-    let (db_client2, connection2) = tokio_postgres::connect(
-        "host=localhost port=5432 dbname=rustbot password=Bean1! user=postgres",
-        NoTls,
-    )
-    .await
-    .unwrap();
+
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.
     tokio::spawn(async move {
@@ -48,65 +45,40 @@ async fn main() {
             eprintln!("connection error: {}", e);
         }
     });
-    tokio::spawn(async move {
-        if let Err(e) = connection2.await {
-            eprintln!("connection error: {}", e);
-        }
-    });
+
     // Start the web server in a separate async task
-    tokio::spawn(async {
-
-        web::run_server(db_client).await;
-    });
-
-    // Configure the client with the bot's prefix and commands
-    let framework = StandardFramework::new()
-        .group(&GENERAL_GROUP)
-        .configure(|c| c.prefix("-")); // set the bot's prefix to "~"
-
-    // Login with a bot token from the environment
-    dotenv().ok();
-    let token = env::var("DISCORD_BOT_TOKEN").expect("Expected a token in the environment");
-    let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
-
-    let mut client = serenity::Client::builder(token, intents)
-        .event_handler(Handler)
-        .register_songbird()
-        .framework(framework) // framework is now used here after all configurations
+    db_client
+        .execute(
+            "CREATE TABLE IF NOT EXISTS commands (command_name text, command_response text)",
+            &[],
+        )
         .await
-        .expect("Error creating client");
+        .unwrap();
+    let app = Router::new()
+        .route("/", get(page_handler))
+        .route("/create-command", post(post_handler))
+        .route("/get-commands", get(get_commands))
+        .route("/static/*path", get(static_handler))
+        .route("/update-command", put(update_command))
+        .layer(Extension(Arc::new(db_client)));
 
-    {
-        let data = &mut client.data.write().await;
-        data.insert::<MyClient>(db_client2);
-    }
 
-    if let Ok(contents) = fs::read_to_string("update.txt") {
-        let parts: Vec<&str> = contents.split_whitespace().collect();
-        if parts.len() == 2 {
-            let channel_id = ChannelId::from_str(parts[0]).expect("Invalid Channel ID");
-            let message_id = MessageId::from_str(parts[1]).expect("Invalid Message ID");
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
 
-            if let Ok(message) = channel_id
-                .message(&client.cache_and_http.http, message_id)
-                .await
-            {
-                match message
-                    .reply(
-                        &client.cache_and_http.http,
-                        "Bot restarted successfully! ty for you waiting",
-                    )
-                    .await
-                {
-                    Ok(_) => fs::remove_file("update.txt").expect("Could not remove update.txt"),
-                    Err(e) => println!("Error sending reply: {:?}", e),
-                }
-            }
-        }
-    }
+async fn static_handler(Path(path): Path<PathBuf>) -> Result<Response<Body>, StatusCode> {
+    let path_str = path.to_str().unwrap().trim_start_matches('/'); // Trim the leading '/'
+    let file_path = PathBuf::from("rustbot_web/src/web/www/static").join(path_str); // Assuming 'static' is your directory
+    serve_file(file_path).await
+}
 
-    // Start listening for events by starting a single shard
-    if let Err(why) = client.start().await {
-        println!("An error occurred while running the client: {:?}", why);
+async fn serve_file(file_path: PathBuf) -> Result<Response<Body>, StatusCode> {
+    match tokio_fs::read(file_path).await {
+        Ok(contents) => Ok(Response::new(Body::from(contents))),
+        Err(_) => Err(StatusCode::NOT_FOUND),
     }
 }
