@@ -4,3 +4,4 @@ rustbot_discord/.env
 rustbot_web/.env
 rustbot_web/output.png
 Cargo.lock
+.env
