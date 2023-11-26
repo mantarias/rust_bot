@@ -33,7 +33,7 @@ async fn update(ctx: &Context, msg: &Message) -> CommandResult {
     let mut command = Command::new("systemctl");
 
     // Add any arguments to the command
-    command.arg("restart").arg("rustbot.service");
+    command.arg("restart").arg("rustbot.timer");
 
     // Execute the command, which returns a Result containing the child process
     match command.spawn() {
