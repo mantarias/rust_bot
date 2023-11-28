@@ -29,16 +29,16 @@ pub mod test;
 pub mod update;
 pub mod ustatus;
 pub mod uwu;
+pub mod export_chat;
 
 use self::{
     c::*, coinflip::*, echo::*, pfp::*, ping::*, play::*, poll::*, stats::*, status::*, test::*,
-    update::*, ustatus::*, uwu::*,
+    update::*, ustatus::*, uwu::*, export_chat::*,
 };
 
 use serenity::framework::standard::macros::group;
 
 #[group]
 #[commands(
-    ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip, c
-)] // Add other commands here
+    ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip, c, export_chat)] // Add other commands here
 struct General;

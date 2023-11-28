@@ -1,0 +1,617 @@
+{
+  "guild": {
+    "id": "646818889006710794",
+    "name": "test server",
+    "icon_url": null
+  },
+  "channel": {
+    "id": "1098597020823994428",
+    "category_id": "646818889006710795",
+    "category": null,
+    "name": "general",
+    "topic": null
+  },
+  "messages": [
+    {
+      "id": "1178866657221939240",
+      "author": "deekahy",
+      "timestamp": "2023-11-28T01:15:13.365+00:00",
+      "content": "-export_chat"
+    },
+    {
+      "id": "1178862590194098216",
+      "author": "deekahy",
+      "timestamp": "2023-11-28T00:59:03.710+00:00",
+      "content": "-export_chat"
+    },
+    {
+      "id": "1178503810969260032",
+      "author": "deekahy",
+      "timestamp": "2023-11-27T01:13:24.077+00:00",
+      "content": "gunite"
+    },
+    {
+      "id": "1178503808742076478",
+      "author": "deekahy",
+      "timestamp": "2023-11-27T01:13:23.546+00:00",
+      "content": "welp i cant get it working"
+    },
+    {
+      "id": "1178502850431688777",
+      "author": "deekahy",
+      "timestamp": "2023-11-27T01:09:35.067+00:00",
+      "content": "Nov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: rustbot_web.service: Main process exited, code=exited, status=101/n/a\nNov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: rustbot_web.service: Failed with result 'exit-code'.\nNov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: rustbot_web.service: Scheduled restart job, restart counter is at 11.\nNov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: Stopped \"rustbot_web\".\nNov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: Dependency failed for \"rustbot_web\".\nNov 27 00<:50:889223816721604708>51 vmi1197031.contaboserver.net systemd[1]: rustbot_web.service: Job rustbot_web.service/start failed with result 'dependency'.\n~"
+    },
+    {
+      "id": "1178500694270033940",
+      "author": "Rustbot",
+      "timestamp": "2023-11-27T01:01:00.998+00:00",
+      "content": "something went wrong, check the logs or try again"
+    },
+    {
+      "id": "1178500693217259630",
+      "author": "Rustbot",
+      "timestamp": "2023-11-27T01:01:00.747+00:00",
+      "content": "updating"
+    },
+    {
+      "id": "1178500690507731074",
+      "author": "deekahy",
+      "timestamp": "2023-11-27T01:01:00.101+00:00",
+      "content": "-update"
+    },
+    {
+      "id": "1178500595087319171",
+      "author": "Rustbot",
+      "timestamp": "2023-11-27T01:00:37.351+00:00",
+      "content": "something went wrong, check the logs or try again"
+    },
+    {
+      "id": "1178500593849995354",
+      "author": "Rustbot",
+      "timestamp": "2023-11-27T01:00:37.056+00:00",
+      "content": "updating"
+    },
+    {
+      "id": "1178500591266320384",
+      "author": "deekahy",
+      "timestamp": "2023-11-27T01:00:36.440+00:00",
+      "content": "-update"
+    },
+    {
+      "id": "1178499038887292938",
+      "author": "Rustbot",
+      "timestamp": "2023-11-27T00:54:26.324+00:00",
+      "content": "Bot restarted successfully! ty for you waiting"
+    },
+    {
+      "id": "1178478380249788476",
+      "author": "deekahy",
+      "timestamp": "2023-11-26T23:32:20.921+00:00",
+      "content": "-update"
+    },
+    {
+      "id": "1178467643045466175",
+      "author": "Red Maid",
+      "timestamp": "2023-11-26T22:49:40.972+00:00",
+      "content": "something went wrong, check the logs or try again"
+    },
+    {
+      "id": "1178467642579894284",
+      "author": "Rustbot",
+      "timestamp": "2023-11-26T22:49:40.861+00:00",
+      "content": "updating"
+    },
+    {
+      "id": "1178467642248532048",
+      "author": "Red Maid",
+      "timestamp": "2023-11-26T22:49:40.782+00:00",
+      "content": "Failed to execute command: No such file or directory (os error 2)"
+    },
+    {
+      "id": "1178467640981868616",
+      "author": "Red Maid",
+      "timestamp": "2023-11-26T22:49:40.480+00:00",
+      "content": "updating"
+    },
+    {
+      "id": "1178467638305886280",
+      "author": "deekahy",
+      "timestamp": "2023-11-26T22:49:39.842+00:00",
+      "content": "-update"
+    },
+    {
+      "id": "1178115927359885404",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T23:32:05.418+00:00",
+      "content": "asdfasd\nasd\nsad\nasfd\nas\nd"
+    },
+    {
+      "id": "1178115925245968464",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T23:32:04.914+00:00",
+      "content": "-c asdfg"
+    },
+    {
+      "id": "1178115802432544869",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T23:31:35.633+00:00",
+      "content": "yayyy this worrkkssssss"
+    },
+    {
+      "id": "1178115798112411700",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T23:31:34.603+00:00",
+      "content": "-c asdf"
+    },
+    {
+      "id": "1178105076993249451",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:58.489+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178105076863205518",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:58.458+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178105076234080266",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:58.308+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178105076099862628",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:58.276+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178105075483287582",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:58.129+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178105074757664861",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:57.956+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178105073692332125",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:57.702+00:00",
+      "content": "1178105070089404496"
+    },
+    {
+      "id": "1178105073671356487",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:57.697+00:00",
+      "content": "1178105070089404496"
+    },
+    {
+      "id": "1178105073440669837",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:57.642+00:00",
+      "content": "1178105070089404496"
+    },
+    {
+      "id": "1178105070089404496",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:56.843+00:00",
+      "content": "-test"
+    },
+    {
+      "id": "1178105062405456002",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:55.011+00:00",
+      "content": "-trst"
+    },
+    {
+      "id": "1178104955756884059",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:29.584+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178104955169669251",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:29.444+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178104954448261171",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:29.272+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178104954284683365",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:29.233+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178104953626169495",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:29.076+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178104953307414618",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:29+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178104952372072560",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T22:48:28.777+00:00",
+      "content": "1178104948874031226"
+    },
+    {
+      "id": "1178104951470305360",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:28.562+00:00",
+      "content": "1178104948874031226"
+    },
+    {
+      "id": "1178104951331893349",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:28.529+00:00",
+      "content": "1178104948874031226"
+    },
+    {
+      "id": "1178104948874031226",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:27.943+00:00",
+      "content": "-test"
+    },
+    {
+      "id": "1178104929261469878",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:23.267+00:00",
+      "content": "The command doesn't match any of the rows in the table."
+    },
+    {
+      "id": "1178104929198555229",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:23.252+00:00",
+      "content": "The command doesn't match any of the rows in the table."
+    },
+    {
+      "id": "1178104926879109251",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:22.699+00:00",
+      "content": "-c asdadas"
+    },
+    {
+      "id": "1178104906289266708",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:17.790+00:00",
+      "content": "2"
+    },
+    {
+      "id": "1178104905538486463",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:17.611+00:00",
+      "content": "The command doesn't match any of the rows in the table."
+    },
+    {
+      "id": "1178104901717475398",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:16.700+00:00",
+      "content": "-c 2"
+    },
+    {
+      "id": "1178104895186935989",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:48:15.143+00:00",
+      "content": "1"
+    },
+    {
+      "id": "1178104893748289536",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:48:14.800+00:00",
+      "content": "The command doesn't match any of the rows in the table."
+    },
+    {
+      "id": "1178104890514477137",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:48:14.029+00:00",
+      "content": "-c 1"
+    },
+    {
+      "id": "1178104269166100482",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:45:45.888+00:00",
+      "content": "this is a test"
+    },
+    {
+      "id": "1178104268541149325",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:45:45.739+00:00",
+      "content": "reeee"
+    },
+    {
+      "id": "1178104265890336859",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:45:45.107+00:00",
+      "content": "-c test"
+    },
+    {
+      "id": "1178104143848677456",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:45:16.010+00:00",
+      "content": "this is a test"
+    },
+    {
+      "id": "1178104141189488670",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:45:15.376+00:00",
+      "content": "-c test"
+    },
+    {
+      "id": "1178104104174747738",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:45:06.551+00:00",
+      "content": "this is a test"
+    },
+    {
+      "id": "1178104100961918998",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:45:05.785+00:00",
+      "content": "-c test"
+    },
+    {
+      "id": "1178098538429829231",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T22:22:59.574+00:00",
+      "content": "reeee"
+    },
+    {
+      "id": "1178098537888759929",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T22:22:59.445+00:00",
+      "content": "this is a test"
+    },
+    {
+      "id": "1178098535376355437",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T22:22:58.846+00:00",
+      "content": "-c test"
+    },
+    {
+      "id": "1178069305011740822",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:49.784+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069304231612519",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:49.598+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069304030285856",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:49.550+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069303443070996",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:49.410+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069302792962111",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:49.255+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069302696476783",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:49.232+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069301069094942",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:48.844+00:00",
+      "content": "1178069298032418836"
+    },
+    {
+      "id": "1178069300792266872",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:48.778+00:00",
+      "content": "1178069298032418836"
+    },
+    {
+      "id": "1178069300607713314",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:48.734+00:00",
+      "content": "1178069298032418836"
+    },
+    {
+      "id": "1178069298032418836",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:26:48.120+00:00",
+      "content": "-test"
+    },
+    {
+      "id": "1178069297441017859",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:47.979+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069296841236530",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:47.836+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069296388247644",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:47.728+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069295805239349",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:47.589+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069295788466256",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:47.585+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069295499059362",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:47.516+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069293536124989",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:47.048+00:00",
+      "content": "1178069289895469247"
+    },
+    {
+      "id": "1178069293527728208",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:47.046+00:00",
+      "content": "1178069289895469247"
+    },
+    {
+      "id": "1178069293515149325",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:47.043+00:00",
+      "content": "1178069289895469247"
+    },
+    {
+      "id": "1178069289895469247",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:26:46.180+00:00",
+      "content": "-test"
+    },
+    {
+      "id": "1178069274246533302",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:42.449+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069274242334720",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:42.448+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069273671901334",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:42.312+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178069273076301925",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:42.170+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069272900149308",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:42.128+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069272514281512",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:42.036+00:00",
+      "content": "content"
+    },
+    {
+      "id": "1178069270844932267",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:26:41.638+00:00",
+      "content": "1178069267560792064"
+    },
+    {
+      "id": "1178069270228369498",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:26:41.491+00:00",
+      "content": "1178069267560792064"
+    },
+    {
+      "id": "1178069270039633962",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:26:41.446+00:00",
+      "content": "1178069267560792064"
+    },
+    {
+      "id": "1178069267560792064",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:26:40.855+00:00",
+      "content": "-test"
+    },
+    {
+      "id": "1178068780857962586",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:24:44.816+00:00",
+      "content": "<@74514771814129664> why is your bot on?"
+    },
+    {
+      "id": "1178068747861381233",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:24:36.949+00:00",
+      "content": "wait"
+    },
+    {
+      "id": "1178068737765670983",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:24:34.542+00:00",
+      "content": "they responded to each other"
+    },
+    {
+      "id": "1178068701493338172",
+      "author": "deekahy",
+      "timestamp": "2023-11-25T20:24:25.894+00:00",
+      "content": "lol"
+    },
+    {
+      "id": "1178068684296699915",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:24:21.794+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178068682908373063",
+      "author": "Rustbot",
+      "timestamp": "2023-11-25T20:24:21.463+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178068682543472740",
+      "author": "Red Maid",
+      "timestamp": "2023-11-25T20:24:21.376+00:00",
+      "content": "-test this is the one it should reply to."
+    },
+    {
+      "id": "1178068681754947666",
+      "author": "mantariasBot",
+      "timestamp": "2023-11-25T20:24:21.188+00:00",
+      "content": "content"
+    }
+  ],
+  "exported_at": "2023-11-28T01:15:14.477225+00:00"
+}
