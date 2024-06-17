@@ -1,7 +1,6 @@
 [workspace]
 members = [
     "rustbot_discord",
-    "rustbot_web",
 ]
 resolver = "2"
 
