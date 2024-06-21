@@ -28,7 +28,7 @@
           shellHook = ''
             rustup toolchain install stable
             rustup default stable
-            cargo run
+            cargo run --release
           '';
         };
       });
