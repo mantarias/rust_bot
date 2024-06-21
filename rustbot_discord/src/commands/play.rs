@@ -8,6 +8,9 @@ use songbird::input::ytdl;
 
 #[command]
 async fn play(ctx: &Context, msg: &Message) -> CommandResult {
+    msg.reply(ctx, "Currently broken, you can fix it yourself at https://github.com/mantarias/rust_bot chatgpt can probably help!").await?;
+
+
     println!("Received play command");
 
     let guild = match msg.guild(&ctx.cache) {
