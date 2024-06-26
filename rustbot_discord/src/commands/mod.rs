@@ -29,6 +29,7 @@ pub mod update;
 pub mod uwu;
 pub mod idk;
 pub mod ban;
+mod kick;
 
 use self::{
     coinflip::*, echo::*, pfp::*, ping::*, play::*, poll::*, stats::*, status::*, test::*,
