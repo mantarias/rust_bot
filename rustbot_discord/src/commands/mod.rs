@@ -28,16 +28,17 @@ pub mod test;
 pub mod update;
 pub mod ustatus;
 pub mod uwu;
+pub mod spamping;
 
 use self::{
     coinflip::*, echo::*, pfp::*, ping::*, play::*, poll::*, stats::*, status::*, test::*,
-    update::*, ustatus::*, uwu::*,
+    update::*, ustatus::*, uwu::*, spamping::*,
 };
 
 use serenity::framework::standard::macros::group;
 
 #[group]
 #[commands(
-    ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip
+    ping, test, echo, status, update, status, ustatus, stats, pfp, uwu, play, poll, coinflip, spamping
 )] // Add other commands here
 struct General;
